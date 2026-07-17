@@ -1,6 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
 import InputError from '@/components/input-error';
-import PasskeyVerify from '@/components/passkey-verify';
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -53,8 +52,6 @@ export default function Login({ status, canResetPassword }: Props) {
     return (
         <>
             <Head title="Log in" />
-
-            <PasskeyVerify />
 
             <div className="flex min-h-svh bg-gradient-to-br from-slate-900 to-slate-700">
                 <div className="flex w-full max-w-[1100px] flex-col overflow-hidden bg-white shadow-2xl md:mx-auto md:my-auto md:flex-row md:rounded-2xl">
