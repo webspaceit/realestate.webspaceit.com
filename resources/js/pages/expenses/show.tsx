@@ -1,0 +1,100 @@
+import { Head, Link, router, usePage } from '@inertiajs/react'
+import { dashboard } from '@/routes'
+import { index as expensesIndex, destroy as expensesDestroy } from '@/routes/expenses'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft, Pencil, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
+
+interface Project { id: number; name: string }
+interface Phase { id: number; name: string }
+
+interface Expense {
+    id: number
+    project: Project
+    phase: Phase | null
+    category: string
+    amount: number
+    description: string
+    expense_date: string
+    paid_to: string
+}
+
+interface PageProps {
+    expense: Expense
+}
+
+export default function ExpenseShow() {
+    const { expense } = usePage<PageProps>().props
+
+    function handleDelete() {
+        if (!confirm('Are you sure you want to delete this expense?')) return
+        router.delete(expensesDestroy(expense.id).url, { preserveState: true, preserveScroll: true, onSuccess: () => toast.success('Expense deleted') })
+    }
+
+    return (
+        <>
+            <Head title={expense.category} />
+            <div className="flex flex-col gap-6 p-4">
+                <div className="flex items-center gap-4">
+                    <Link href={expensesIndex()}>
+                        <Button variant="outline" size="icon"><ArrowLeft className="size-4" /></Button>
+                    </Link>
+                    <h1 className="text-2xl font-bold">{expense.category}</h1>
+                </div>
+
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>Details</CardTitle>
+                        <div className="flex gap-2">
+                            <Link href={expensesIndex().url + '/' + expense.id + '/edit'}>
+                                <Button variant="outline" size="sm"><Pencil className="mr-2 size-4" />Edit</Button>
+                            </Link>
+                            <Button variant="destructive" size="sm" onClick={handleDelete}><Trash2 className="mr-2 size-4" />Delete</Button>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <dl className="grid grid-cols-2 gap-4">
+                            <div>
+                                <dt className="text-sm text-muted-foreground">Project</dt>
+                                <dd className="font-medium">{expense.project.name}</dd>
+                            </div>
+                            <div>
+                                <dt className="text-sm text-muted-foreground">Phase</dt>
+                                <dd className="font-medium">{expense.phase?.name ?? '-'}</dd>
+                            </div>
+                            <div>
+                                <dt className="text-sm text-muted-foreground">Category</dt>
+                                <dd className="font-medium">{expense.category}</dd>
+                            </div>
+                            <div>
+                                <dt className="text-sm text-muted-foreground">Amount</dt>
+                                <dd className="font-medium">৳{Number(expense.amount).toFixed(2)}</dd>
+                            </div>
+                            <div className="col-span-2">
+                                <dt className="text-sm text-muted-foreground">Description</dt>
+                                <dd className="font-medium">{expense.description}</dd>
+                            </div>
+                            <div>
+                                <dt className="text-sm text-muted-foreground">Expense Date</dt>
+                                <dd className="font-medium">{expense.expense_date}</dd>
+                            </div>
+                            <div>
+                                <dt className="text-sm text-muted-foreground">Paid To</dt>
+                                <dd className="font-medium">{expense.paid_to}</dd>
+                            </div>
+                        </dl>
+                    </CardContent>
+                </Card>
+            </div>
+        </>
+    )
+}
+
+ExpenseShow.layout = (props: PageProps) => ({
+    breadcrumbs: [
+        { title: 'Dashboard', href: dashboard() },
+        { title: 'Expenses', href: expensesIndex() },
+        { title: props.expense?.category ?? 'Detail', href: '#' },
+    ],
+})
