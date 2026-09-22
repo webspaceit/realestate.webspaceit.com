@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { ChevronRight, GripVertical } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import {
     Collapsible,
     CollapsibleContent,
@@ -45,10 +45,13 @@ function SortableNavItem({
     if (!hasSubItems) {
         return (
             <SidebarMenuItem key={item.title}>
-                <div ref={setNodeRef} style={style} className="flex items-center">
-                    <button {...attributes} {...listeners} className="flex h-9 w-6 cursor-grab items-center justify-center text-white/50 hover:text-white active:cursor-grabbing">
-                        <GripVertical className="h-3.5 w-3.5" />
-                    </button>
+                <div
+                    ref={setNodeRef}
+                    style={style}
+                    {...attributes}
+                    {...listeners}
+                    className="flex cursor-grab items-center active:cursor-grabbing"
+                >
                     <SidebarMenuButton
                         asChild
                         isActive={isCurrentUrl(item.href)}
@@ -75,10 +78,11 @@ function SortableNavItem({
         >
             <SidebarMenuItem>
                 <div ref={setNodeRef} style={style}>
-                    <div className="flex items-center">
-                        <button {...attributes} {...listeners} className="flex h-9 w-6 cursor-grab items-center justify-center text-white/50 hover:text-white active:cursor-grabbing">
-                            <GripVertical className="h-3.5 w-3.5" />
-                        </button>
+                    <div
+                        {...attributes}
+                        {...listeners}
+                        className="flex cursor-grab items-center active:cursor-grabbing"
+                    >
                         <CollapsibleTrigger asChild className="flex-1">
                             <SidebarMenuButton tooltip={{ children: item.title }}>
                                 {item.icon && <item.icon />}
