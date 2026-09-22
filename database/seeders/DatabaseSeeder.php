@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             RealEstateSeeder::class,
             DepartmentSeeder::class,
             DesignationSeeder::class,
+            EmployeeSeeder::class,
         ]);
     }
 }
