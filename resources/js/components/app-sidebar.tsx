@@ -271,9 +271,12 @@ export function AppSidebar() {
 
     function handleReorder(items: NavItem[]) {
         setNavItems(items);
+        const xsrfCookie = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]*)/)?.[1];
+        const token = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null)?.content
+            || (xsrfCookie ? decodeURIComponent(xsrfCookie) : '');
         fetch('/sidebar-order', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token, 'X-XSRF-TOKEN': token },
             body: JSON.stringify({ order: items.map((i) => i.id) }),
         }).catch(() => {});
     }
