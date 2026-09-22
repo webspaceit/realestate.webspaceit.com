@@ -58,7 +58,7 @@ function FieldControl({ field, value, employeeOptions, departmentOptions, design
                 <div className="space-y-2">
                     <Label>{field.label}{requiredMark}</Label>
                     <Select value={value} onValueChange={(v) => onChange(v === ' ' ? '' : v)}>
-                        <SelectTrigger><SelectValue placeholder={`Select ${field.label.toLowerCase()}...`} /></SelectTrigger>
+                        <SelectTrigger className="w-full"><SelectValue placeholder={`Select ${field.label.toLowerCase()}...`} /></SelectTrigger>
                         <SelectContent>
                             <SelectItem value=" ">—</SelectItem>
                             {(field.options ?? []).map((opt) => (

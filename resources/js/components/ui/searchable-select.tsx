@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
+import { CheckIcon, ChevronsUpDown } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
 
 interface Option {
     value: string
@@ -43,19 +45,30 @@ export default function SearchableSelect({ label, placeholder, disabled, options
     }, [open])
 
     return (
-        <div className="space-y-1 relative" ref={containerRef}>
-            <Label>{label}</Label>
-            <div
-                className={`flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={() => { if (!disabled) { setOpen(!open) } }}
+        <div className="relative space-y-1" ref={containerRef}>
+            {label && <Label>{label}</Label>}
+            <button
+                type="button"
+                disabled={disabled}
+                onClick={() => setOpen((prev) => !prev)}
+                aria-expanded={open}
+                aria-haspopup="listbox"
+                className={cn(
+                    "border-input flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow]",
+                    open && "border-ring ring-ring/50 ring-[3px]",
+                    disabled && "cursor-not-allowed opacity-50"
+                )}
             >
-                <span className={selected ? '' : 'text-muted-foreground'}>
+                <span className={cn('truncate', !selected && 'text-muted-foreground')}>
                     {selected ? selected.label : placeholder}
                 </span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 opacity-50"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
-            </div>
+                <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
+            </button>
             {open && (
-                <div className="absolute z-50 mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md">
+                <div
+                    className="bg-popover text-popover-foreground absolute z-50 mt-1 w-full rounded-md border shadow-md"
+                    role="listbox"
+                >
                     <div className="p-1">
                         <Input
                             ref={inputRef}
@@ -65,19 +78,32 @@ export default function SearchableSelect({ label, placeholder, disabled, options
                             className="h-8"
                         />
                     </div>
-                    <div className="max-h-48 overflow-y-auto">
+                    <div className="max-h-48 overflow-y-auto p-1">
                         {filtered.length === 0 ? (
                             <div className="px-2 py-4 text-center text-sm text-muted-foreground">No results</div>
                         ) : (
-                            filtered.map((o) => (
-                                <div
-                                    key={o.value}
-                                    className={`flex cursor-pointer items-center px-2 py-1.5 text-sm rounded-sm ${o.value === value ? 'bg-accent text-accent-foreground' : 'hover:bg-accent hover:text-accent-foreground'}`}
-                                    onClick={() => { onChange(o.value); setOpen(false); setSearch('') }}
-                                >
-                                    {o.label}
-                                </div>
-                            ))
+                            filtered.map((o) => {
+                                const isSelected = o.value === value
+                                return (
+                                    <div
+                                        key={o.value}
+                                        role="option"
+                                        aria-selected={isSelected}
+                                        onClick={() => { onChange(o.value); setOpen(false); setSearch('') }}
+                                        className={cn(
+                                            "relative flex cursor-pointer items-center rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none",
+                                            isSelected ? 'bg-accent text-accent-foreground' : 'hover:bg-accent hover:text-accent-foreground'
+                                        )}
+                                    >
+                                        <span className="flex-1 truncate">{o.label}</span>
+                                        {isSelected && (
+                                            <span className="absolute right-2 flex size-3.5 items-center justify-center">
+                                                <CheckIcon className="size-4" />
+                                            </span>
+                                        )}
+                                    </div>
+                                )
+                            })
                         )}
                     </div>
                 </div>
