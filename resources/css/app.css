@@ -162,7 +162,7 @@
 }
 
 [data-sidebar='sidebar'] {
-    background: linear-gradient(180deg, var(--sidebar-from) 0%, var(--sidebar-via) 50%, var(--sidebar-to) 100%) !important;
+    background: var(--sidebar) !important;
 }
 
 /* Slim, subtle scrollbar for the sidebar menu (replaces the default thick one) */
