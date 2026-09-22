@@ -2,7 +2,7 @@ import { Head, usePage } from '@inertiajs/react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Building2, Layers, FolderKanban, Users, AlertTriangle } from 'lucide-react'
+import { Building2, Layers, FolderKanban, Users, AlertTriangle, type LucideIcon } from 'lucide-react'
 import { dashboard } from '@/routes'
 
 interface Expense {
@@ -78,6 +78,36 @@ function priorityVariant(priority: string) {
     }
 }
 
+function StatCard({
+    label,
+    value,
+    icon: Icon,
+    gradient,
+    shadow,
+}: {
+    label: string
+    value: number
+    icon: LucideIcon
+    gradient: string
+    shadow: string
+}) {
+    return (
+        <div
+            className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} p-4 text-white shadow-xl ${shadow} transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl sm:p-6`}
+        >
+            <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-white/10"></div>
+            <div className="absolute right-0 bottom-0 h-16 w-16 translate-x-5 translate-y-4 rounded-full bg-white/5"></div>
+            <div className="relative">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                    <Icon className="h-5 w-5" />
+                </div>
+                <p className="text-xs font-medium text-white/80 sm:text-sm">{label}</p>
+                <p className="mt-1 text-2xl font-bold sm:text-3xl">{value}</p>
+            </div>
+        </div>
+    )
+}
+
 export default function Dashboard() {
     const { stats } = usePage<PageProps>().props
 
@@ -86,85 +116,91 @@ export default function Dashboard() {
             <Head title="Dashboard" />
 
             <div className="space-y-6">
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">Total Buildings</CardTitle>
-                            <Building2 className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-3xl font-bold">{stats.total_buildings}</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">Total Flats</CardTitle>
-                            <Layers className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-3xl font-bold">{stats.total_units}</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
-                            <FolderKanban className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-3xl font-bold">{stats.total_projects}</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">Flat Owners Detail</CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-3xl font-bold">{stats.total_clients}</p>
-                        </CardContent>
-                    </Card>
+                {/* Summary Cards */}
+                <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <StatCard
+                        label="Total Buildings"
+                        value={stats.total_buildings}
+                        icon={Building2}
+                        gradient="from-primary-500 to-primary-700"
+                        shadow="shadow-primary-500/20"
+                    />
+                    <StatCard
+                        label="Total Flats"
+                        value={stats.total_units}
+                        icon={Layers}
+                        gradient="from-teal-500 to-teal-700"
+                        shadow="shadow-teal-500/20"
+                    />
+                    <StatCard
+                        label="Total Projects"
+                        value={stats.total_projects}
+                        icon={FolderKanban}
+                        gradient="from-indigo-500 to-indigo-700"
+                        shadow="shadow-indigo-500/20"
+                    />
+                    <StatCard
+                        label="Flat Owners Detail"
+                        value={stats.total_clients}
+                        icon={Users}
+                        gradient="from-amber-500 to-orange-600"
+                        shadow="shadow-amber-500/20"
+                    />
                 </div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Projects by Status</CardTitle>
+                {/* Projects by Status */}
+                <Card className="overflow-hidden border-0 shadow-lg">
+                    <CardHeader className="rounded-t-2xl border-b border-gray-100 bg-gradient-to-r from-primary-50 to-white">
+                        <CardTitle className="text-lg font-bold text-primary-700">
+                            Projects by Status
+                        </CardTitle>
                         <CardDescription>Overview of project statuses</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                        <div className="flex flex-wrap gap-3">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-wrap gap-4 sm:gap-6">
                             <div className="flex items-center gap-2">
-                                <Badge variant="secondary">{stats.projects_by_status.planning}</Badge>
-                                <span className="text-sm text-muted-foreground">Planning</span>
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 font-bold text-gray-700">
+                                    {stats.projects_by_status.planning}
+                                </span>
+                                <span className="text-sm font-medium text-gray-700">Planning</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Badge>{stats.projects_by_status.in_progress}</Badge>
-                                <span className="text-sm text-muted-foreground">In Progress</span>
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 font-bold text-primary-700">
+                                    {stats.projects_by_status.in_progress}
+                                </span>
+                                <span className="text-sm font-medium text-gray-700">In Progress</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Badge variant="outline">{stats.projects_by_status.completed}</Badge>
-                                <span className="text-sm text-muted-foreground">Completed</span>
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-100 font-bold text-teal-700">
+                                    {stats.projects_by_status.completed}
+                                </span>
+                                <span className="text-sm font-medium text-gray-700">Completed</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Badge variant="destructive">{stats.projects_by_status.on_hold}</Badge>
-                                <span className="text-sm text-muted-foreground">On Hold</span>
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 font-bold text-red-700">
+                                    {stats.projects_by_status.on_hold}
+                                </span>
+                                <span className="text-sm font-medium text-gray-700">On Hold</span>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
 
                 <div className="grid gap-6 lg:grid-cols-2">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Recent Expenses</CardTitle>
+                    <Card className="overflow-hidden border-0 shadow-lg">
+                        <CardHeader className="rounded-t-2xl border-b border-gray-100 bg-gradient-to-r from-primary-50 to-white">
+                            <CardTitle className="text-lg font-bold text-primary-700">
+                                Recent Expenses
+                            </CardTitle>
                             <CardDescription>Latest expense entries</CardDescription>
                         </CardHeader>
                         <CardContent className="p-0">
                             <Table>
                                 <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Description</TableHead>
-                                        <TableHead>Category</TableHead>
-                                        <TableHead className="text-right">Amount</TableHead>
+                                    <TableRow className="bg-primary-500 hover:bg-primary-500">
+                                        <TableHead className="text-white">Description</TableHead>
+                                        <TableHead className="text-white">Category</TableHead>
+                                        <TableHead className="text-right text-white">Amount</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -176,10 +212,10 @@ export default function Dashboard() {
                                         </TableRow>
                                     ) : (
                                         stats.recent_expenses.map((expense) => (
-                                            <TableRow key={expense.id}>
-                                                <TableCell className="font-medium">{expense.description}</TableCell>
-                                                <TableCell>{expense.category}</TableCell>
-                                                <TableCell className="text-right">
+                                            <TableRow key={expense.id} className="border-gray-50 transition-colors hover:bg-primary-50/30">
+                                                <TableCell className="font-medium text-gray-800">{expense.description}</TableCell>
+                                                <TableCell className="text-gray-600">{expense.category}</TableCell>
+                                                <TableCell className="text-right font-bold text-primary-600">
                                                     ৳{Number(expense.amount).toLocaleString()}
                                                 </TableCell>
                                             </TableRow>
@@ -190,19 +226,21 @@ export default function Dashboard() {
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>My Tasks</CardTitle>
+                    <Card className="overflow-hidden border-0 shadow-lg">
+                        <CardHeader className="rounded-t-2xl border-b border-gray-100 bg-gradient-to-r from-primary-50 to-white">
+                            <CardTitle className="text-lg font-bold text-primary-700">
+                                My Tasks
+                            </CardTitle>
                             <CardDescription>Upcoming and pending tasks</CardDescription>
                         </CardHeader>
                         <CardContent className="p-0">
                             <Table>
                                 <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Task</TableHead>
-                                        <TableHead>Status</TableHead>
-                                        <TableHead>Priority</TableHead>
-                                        <TableHead>Due</TableHead>
+                                    <TableRow className="bg-primary-500 hover:bg-primary-500">
+                                        <TableHead className="text-white">Task</TableHead>
+                                        <TableHead className="text-white">Status</TableHead>
+                                        <TableHead className="text-white">Priority</TableHead>
+                                        <TableHead className="text-white">Due</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -214,8 +252,8 @@ export default function Dashboard() {
                                         </TableRow>
                                     ) : (
                                         stats.my_tasks.map((task) => (
-                                            <TableRow key={task.id}>
-                                                <TableCell className="font-medium">{task.title}</TableCell>
+                                            <TableRow key={task.id} className="border-gray-50 transition-colors hover:bg-primary-50/30">
+                                                <TableCell className="font-medium text-gray-800">{task.title}</TableCell>
                                                 <TableCell>
                                                     <Badge variant={statusVariant(task.status)}>{task.status}</Badge>
                                                 </TableCell>
@@ -224,7 +262,7 @@ export default function Dashboard() {
                                                         {task.priority}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell>{new Date(task.due_date).toLocaleDateString()}</TableCell>
+                                                <TableCell className="text-gray-600">{new Date(task.due_date).toLocaleDateString()}</TableCell>
                                             </TableRow>
                                         ))
                                     )}
@@ -234,23 +272,25 @@ export default function Dashboard() {
                     </Card>
                 </div>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center gap-2">
+                <Card className="overflow-hidden border-0 shadow-lg">
+                    <CardHeader className="flex flex-row items-center gap-2 rounded-t-2xl border-b border-gray-100 bg-gradient-to-r from-primary-50 to-white">
                         <AlertTriangle className="h-5 w-5 text-amber-500" />
                         <div>
-                            <CardTitle>Low Stock Inventory</CardTitle>
+                            <CardTitle className="text-lg font-bold text-primary-700">
+                                Low Stock Inventory
+                            </CardTitle>
                             <CardDescription>Items that need reordering</CardDescription>
                         </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-4 sm:p-6">
                         {stats.low_stock.length === 0 ? (
                             <p className="py-4 text-center text-sm text-muted-foreground">All inventory items are adequately stocked.</p>
                         ) : (
                             <div className="space-y-3">
                                 {stats.low_stock.map((item) => (
-                                    <div key={item.id} className="flex items-center justify-between rounded-lg border p-3">
+                                    <div key={item.id} className="flex items-center justify-between rounded-xl border border-primary-100 bg-gradient-to-r from-primary-50/50 to-white p-3 transition-all hover:shadow-md">
                                         <div>
-                                            <p className="font-medium">{item.name}</p>
+                                            <p className="font-medium text-gray-800">{item.name}</p>
                                             <p className="text-sm text-muted-foreground">
                                                 {item.quantity} / {item.reorder_level} {item.unit}
                                             </p>

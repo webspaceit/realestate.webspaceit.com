@@ -37,7 +37,7 @@ function SortableNavItem({ item }: { item: NavItem }) {
         return (
             <SidebarMenuItem key={item.title}>
                 <div ref={setNodeRef} style={style} className="flex items-center">
-                    <button {...attributes} {...listeners} className="flex h-9 w-6 cursor-grab items-center justify-center text-muted-foreground hover:text-foreground active:cursor-grabbing">
+                    <button {...attributes} {...listeners} className="flex h-9 w-6 cursor-grab items-center justify-center text-white/50 hover:text-white active:cursor-grabbing">
                         <GripVertical className="h-3.5 w-3.5" />
                     </button>
                     <SidebarMenuButton
@@ -66,7 +66,7 @@ function SortableNavItem({ item }: { item: NavItem }) {
             <SidebarMenuItem>
                 <div ref={setNodeRef} style={style}>
                     <div className="flex items-center">
-                        <button {...attributes} {...listeners} className="flex h-9 w-6 cursor-grab items-center justify-center text-muted-foreground hover:text-foreground active:cursor-grabbing">
+                        <button {...attributes} {...listeners} className="flex h-9 w-6 cursor-grab items-center justify-center text-white/50 hover:text-white active:cursor-grabbing">
                             <GripVertical className="h-3.5 w-3.5" />
                         </button>
                         <CollapsibleTrigger asChild className="flex-1">
