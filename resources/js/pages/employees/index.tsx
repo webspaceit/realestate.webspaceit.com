@@ -141,6 +141,19 @@ export default function Index() {
                                 <Search className="mr-2 h-4 w-4" />
                                 Search
                             </Button>
+                            <div className="ml-auto flex items-center gap-2">
+                                <span className="text-sm text-muted-foreground">Rows per page</span>
+                                <Select value={perPage} onValueChange={changePerPage}>
+                                    <SelectTrigger className="w-28">
+                                        <SelectValue placeholder="Per page" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {PER_PAGE_OPTIONS.map((size) => (
+                                            <SelectItem key={size} value={size}>{size} / page</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
@@ -209,23 +222,11 @@ export default function Index() {
 
                 {data.last_page > 1 || data.total > 0 ? (
                     <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm text-muted-foreground">
-                                {data.total > 0
-                                    ? `Showing ${data.from ?? 0}–${data.to ?? 0} of ${data.total}`
-                                    : 'No results'}
-                            </span>
-                            <Select value={perPage} onValueChange={changePerPage}>
-                                <SelectTrigger className="w-28">
-                                    <SelectValue placeholder="Per page" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {PER_PAGE_OPTIONS.map((size) => (
-                                        <SelectItem key={size} value={size}>{size} / page</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                        <span className="text-sm text-muted-foreground">
+                            {data.total > 0
+                                ? `Showing ${data.from ?? 0}–${data.to ?? 0} of ${data.total}`
+                                : 'No results'}
+                        </span>
                         {data.last_page > 1 && (
                             <div className="flex items-center gap-2">
                                 {data.links.map((link, i) => (
