@@ -103,7 +103,7 @@ const defaultNavItems: NavItem[] = [
     },
     {
         id: 'employees',
-        title: 'List of Employee',
+        title: 'HRM',
         href: employees.index().url,
         icon: Users,
         items: [
