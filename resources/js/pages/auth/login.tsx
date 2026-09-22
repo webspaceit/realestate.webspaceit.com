@@ -1,6 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
+import AppLogoIcon from '@/components/app-logo-icon';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -53,11 +54,25 @@ export default function Login({ status, canResetPassword }: Props) {
         <>
             <Head title="Log in" />
 
-            <div className="flex min-h-svh bg-gradient-to-br from-slate-900 to-slate-700">
-                <div className="flex w-full max-w-[1100px] flex-col overflow-hidden bg-white shadow-2xl md:mx-auto md:my-auto md:flex-row md:rounded-2xl">
+            <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-gradient-to-br from-[#007c47] via-[#006e40] to-[#005c35] p-4">
+                {/* Soft decorative backdrop echoing the brand */}
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute -top-40 -right-40 size-[30rem] rounded-full bg-white/5"
+                />
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute -bottom-52 -left-36 size-[32rem] rounded-full bg-white/5"
+                />
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute top-1/2 left-1/2 size-[26rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
+                />
+
+                <div className="relative z-10 flex w-full max-w-[1100px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl md:flex-row">
                     <div className="flex flex-col items-center p-8 md:w-1/2 md:p-10">
                         <div className="mb-6 flex flex-col items-center gap-3">
-                            <h2 className="text-xl font-bold text-gray-800">
+                            <h2 className="text-xl font-bold text-[#007c47]">
                                 Real Estate CRM
                             </h2>
                             <p className="text-sm text-gray-500">Sign In</p>
@@ -69,7 +84,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     key={role}
                                     type="button"
                                     onClick={() => fillRole(role)}
-                                    className="cursor-pointer rounded-full bg-slate-800 px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-700"
+                                    className="cursor-pointer rounded-full bg-[#007c47] px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[#005c35]"
                                 >
                                     {role}
                                 </button>
@@ -150,7 +165,7 @@ export default function Login({ status, canResetPassword }: Props) {
 
                                 <Button
                                     type="submit"
-                                    className="h-11 w-full rounded-lg bg-slate-800 text-base font-semibold hover:bg-slate-700"
+                                    className="h-11 w-full rounded-lg bg-[#007c47] text-base font-semibold text-white hover:bg-[#005c35]"
                                     tabIndex={4}
                                     disabled={submitting}
                                     data-test="login-button"
@@ -163,13 +178,13 @@ export default function Login({ status, canResetPassword }: Props) {
                             <div className="flex items-center justify-between text-sm">
                                 <Link
                                     href={register()}
-                                    className="text-slate-700 hover:text-slate-800 hover:underline"
+                                    className="text-[#007c47] hover:text-[#005c35] hover:underline"
                                 >
                                     Register
                                 </Link>
                                 <Link
                                     href={home()}
-                                    className="text-slate-700 hover:text-slate-800 hover:underline"
+                                    className="text-[#007c47] hover:text-[#005c35] hover:underline"
                                 >
                                     Home
                                 </Link>
@@ -179,7 +194,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                 <div className="text-center">
                                     <Link
                                         href={request()}
-                                        className="text-sm text-red-500 hover:text-red-600 hover:underline"
+                                        className="text-sm text-[#007c47] hover:text-[#005c35] hover:underline"
                                         tabIndex={5}
                                     >
                                         Forgot Password?
@@ -195,12 +210,23 @@ export default function Login({ status, canResetPassword }: Props) {
                         )}
                     </div>
 
-                    <div className="hidden items-center justify-center bg-slate-800 p-10 md:flex md:w-1/2">
-                        <div className="text-center text-white">
-                            <h3 className="mb-4 text-2xl font-bold">
+                    <div className="relative hidden items-center justify-center overflow-hidden bg-gradient-to-br from-[#007c47] to-[#005c35] p-10 md:flex md:w-1/2">
+                        <div
+                            aria-hidden
+                            className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full bg-white/10"
+                        />
+                        <div
+                            aria-hidden
+                            className="pointer-events-none absolute -bottom-20 -left-24 size-72 rounded-full bg-white/5"
+                        />
+                        <div className="relative text-center text-white">
+                            <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-2xl bg-white shadow-lg">
+                                <AppLogoIcon className="size-9 fill-current text-[#005c35]" />
+                            </div>
+                            <h3 className="mb-2 text-2xl font-bold">
                                 WSIT Real Estate
                             </h3>
-                            <p className="text-sm text-gray-300">
+                            <p className="text-sm text-white/80">
                                 Property Management System
                             </p>
                         </div>
