@@ -8,7 +8,7 @@ export default function AppLogo() {
             </div>
             <div className="ml-1 grid flex-1 text-left text-sm text-sidebar-foreground/90">
                 <span className="mb-0.5 truncate leading-tight font-semibold text-sidebar-foreground">
-                    Laravel Starter Kit
+                    Real-Estate Management System
                 </span>
             </div>
         </>
