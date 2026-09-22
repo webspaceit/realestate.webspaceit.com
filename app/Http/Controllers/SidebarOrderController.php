@@ -7,15 +7,21 @@ use Illuminate\Http\Request;
 
 class SidebarOrderController extends Controller
 {
+    /**
+     * Return the single, app-wide sidebar order shared by all users.
+     */
     public function show()
     {
-        $order = SidebarOrder::where('user_id', auth()->id())->first();
+        $order = SidebarOrder::latest('updated_at')->first();
 
         return response()->json([
             'order' => $order?->order ?? [],
         ]);
     }
 
+    /**
+     * Persist one global sidebar order for every user.
+     */
     public function update(Request $request)
     {
         $data = $request->validate([
@@ -23,10 +29,17 @@ class SidebarOrderController extends Controller
             'order.*' => 'string',
         ]);
 
-        SidebarOrder::updateOrCreate(
-            ['user_id' => auth()->id()],
-            ['order' => $data['order']],
-        );
+        $global = SidebarOrder::latest('updated_at')->first();
+
+        if ($global) {
+            $global->update(['order' => $data['order']]);
+            SidebarOrder::whereKeyNot($global->id)->delete();
+        } else {
+            SidebarOrder::create([
+                'user_id' => auth()->id(),
+                'order' => $data['order'],
+            ]);
+        }
 
         return response()->json(['message' => 'Order saved']);
     }
