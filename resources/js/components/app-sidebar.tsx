@@ -18,6 +18,33 @@ import {
     Users,
     UserCircle,
     List,
+    IdCard,
+    Calendar,
+    Wallet,
+    BarChart3,
+    GraduationCap,
+    ClipboardCheck,
+    Award,
+    Car,
+    Receipt,
+    Briefcase,
+    UserCog,
+    Boxes,
+    Settings,
+    Banknote,
+    Timer,
+    Target,
+    Gavel,
+    Handshake,
+    BookOpen,
+    Calculator,
+    FolderCog,
+    Info,
+    PartyPopper,
+    Clock,
+    ArrowLeftRight,
+    Megaphone,
+    TrendingUp,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -35,7 +62,11 @@ import {
 import { dashboard } from '@/routes';
 import bookings from '@/routes/bookings';
 import buildings from '@/routes/buildings';
+import departments from '@/routes/departments';
+import designations from '@/routes/designations';
+import employees from '@/routes/employees';
 import flats from '@/routes/flats';
+import hr from '@/routes/hr';
 import phases from '@/routes/phases';
 import milestones from '@/routes/milestones';
 import projectTypes from '@/routes/project-types';
@@ -69,6 +100,47 @@ const defaultNavItems: NavItem[] = [
         title: 'Users',
         href: users.index().url,
         icon: Users,
+    },
+    {
+        id: 'employees',
+        title: 'List of Employee',
+        href: employees.index().url,
+        icon: Users,
+        items: [
+            { id: 'list-of-employee', title: 'List of Employee', href: employees.index().url, icon: List },
+            { id: 'departments', title: 'Departments', href: departments.index().url, icon: Building2 },
+            { id: 'designations', title: 'Designations', href: designations.index().url, icon: List },
+            { id: 'employee-personal-info', title: 'Employee Personal Info', href: employees.create().url, icon: IdCard },
+            { id: 'leave-application', title: 'Leave Application', href: hr.index('leave_applications').url, icon: Calendar },
+            { id: 'responsibility', title: 'Responsibility', href: hr.index('responsibilities').url, icon: ClipboardList },
+            { id: 'loan-application', title: 'Loan Application', href: hr.index('loan_applications').url, icon: Wallet },
+            { id: 'attendance-sheet', title: 'Attendance Sheet', href: hr.index('attendance_sheets').url, icon: CalendarCheck },
+            { id: 'attendance-report', title: 'Attendance Report/Summary', href: hr.index('attendance_reports').url, icon: BarChart3 },
+            { id: 'e-learning', title: 'E-Learning', href: hr.index('e_learnings').url, icon: GraduationCap },
+            { id: 'appraisal-apply', title: 'Appraisal Apply', href: hr.index('appraisal_applies').url, icon: ClipboardCheck },
+            { id: 'achievement-entry', title: 'Achievement Entry', href: hr.index('achievements').url, icon: Award },
+            { id: 'conveyance-entry', title: 'Conveyance Entry', href: hr.index('conveyance_entries').url, icon: Car },
+            { id: 'pay-slip', title: 'Pay Slip', href: hr.index('pay_slips').url, icon: Receipt },
+            { id: 'recruit-management', title: 'Recruit Management', href: hr.index('recruit_management').url, icon: Briefcase },
+            { id: 'hr-consultant', title: 'HR Consultant', href: hr.index('hr_consultants').url, icon: UserCog },
+            { id: 'asset-manage', title: 'Asset Manage', href: hr.index('asset_manage').url, icon: Boxes },
+            { id: 'hr-info-system', title: 'HR Info System', href: hr.index('hr_info_system').url, icon: Settings },
+            { id: 'payroll-manage', title: 'Payroll Manage', href: hr.index('payroll_manage').url, icon: Banknote },
+            { id: 'attend-leave', title: 'Attend & Leave', href: hr.index('attend_leaves').url, icon: Timer },
+            { id: 'perform-management', title: 'Perform Management', href: hr.index('performance_management').url, icon: Target },
+            { id: 'discipline-management', title: 'Discipline Management', href: hr.index('discipline_management').url, icon: Gavel },
+            { id: 'crm', title: 'Customer Relationship Management', href: hr.index('crm').url, icon: Handshake },
+            { id: 'learning-management', title: 'Learning Management', href: hr.index('learning_management').url, icon: BookOpen },
+            { id: 'accounts-fin', title: 'Accounts & Fin', href: hr.index('accounts_finance').url, icon: Calculator },
+            { id: 'inventory-management', title: 'Inventory Management', href: inventory.index().url, icon: ShoppingCart },
+            { id: 'administration', title: 'Administration', href: hr.index('administration').url, icon: FolderCog },
+            { id: 'leave-information', title: 'Leave Information', href: hr.index('leave_information').url, icon: Info },
+            { id: 'holiday', title: 'Holiday', href: hr.index('holidays').url, icon: PartyPopper },
+            { id: 'shift', title: 'Shift', href: hr.index('shifts').url, icon: Clock },
+            { id: 'employee-movement', title: 'Employee Movement', href: hr.index('employee_movements').url, icon: ArrowLeftRight },
+            { id: 'office-notice', title: 'Office Notice', href: hr.index('office_notices').url, icon: Megaphone },
+            { id: 'promotional-activities', title: 'Promotional Activities', href: hr.index('promotional_activities').url, icon: TrendingUp },
+        ],
     },
     {
         id: 'projects',

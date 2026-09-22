@@ -11,7 +11,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\HrRecordController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialPurchaseController;
@@ -77,6 +81,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('bookings', BookingController::class);
     Route::get('payment-terms', [PaymentTermController::class, 'index'])->name('payment-terms.index');
     Route::put('payment-terms', [PaymentTermController::class, 'update'])->name('payment-terms.update');
+
+    // ---- HR module ----
+    Route::resource('departments', DepartmentController::class);
+    Route::resource('designations', DesignationController::class);
+    Route::resource('employees', EmployeeController::class);
+    Route::get('hr/{module}', [HrRecordController::class, 'index'])->name('hr.index');
+    Route::get('hr/{module}/create', [HrRecordController::class, 'create'])->name('hr.create');
+    Route::post('hr/{module}', [HrRecordController::class, 'store'])->name('hr.store');
+    Route::get('hr/{module}/{record}', [HrRecordController::class, 'edit'])->name('hr.edit');
+    Route::match(['put', 'patch'], 'hr/{module}/{record}', [HrRecordController::class, 'update'])->name('hr.update');
+    Route::delete('hr/{module}/{record}', [HrRecordController::class, 'destroy'])->name('hr.destroy');
 
     Route::get('files/{path}', function (string $path) {
         $fullPath = storage_path('app/public/' . $path);

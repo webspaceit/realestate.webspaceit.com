@@ -10,6 +10,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RealEstateSeeder::class,
+            DepartmentSeeder::class,
+            DesignationSeeder::class,
         ]);
     }
 }
