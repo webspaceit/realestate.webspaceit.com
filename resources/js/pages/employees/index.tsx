@@ -29,11 +29,13 @@ interface Option {
 }
 
 interface PageProps {
-    employees: { data: Employee[]; current_page: number; last_page: number; links: { url: string | null; label: string; active: boolean }[] };
+    employees: { data: Employee[]; current_page: number; last_page: number; per_page: number; total: number; from: number | null; to: number | null; links: { url: string | null; label: string; active: boolean }[] };
     departments: Option[];
     designations: Option[];
-    filters: { search?: string; department_id?: string; designation_id?: string; status?: string };
+    filters: { search?: string; department_id?: string; designation_id?: string; status?: string; per_page?: string };
 }
+
+const PER_PAGE_OPTIONS = ['10', '25', '50', '100'];
 
 export default function Index() {
     const { employees: data, departments, designations, filters } = usePage<PageProps>().props;
@@ -41,6 +43,7 @@ export default function Index() {
     const [departmentId, setDepartmentId] = useState(filters.department_id || ' ');
     const [designationId, setDesignationId] = useState(filters.designation_id || ' ');
     const [status, setStatus] = useState(filters.status || '');
+    const [perPage, setPerPage] = useState(filters.per_page || '10');
 
     function applyFilters() {
         router.get(employees.index().url, {
@@ -48,6 +51,18 @@ export default function Index() {
             department_id: departmentId === ' ' ? '' : departmentId,
             designation_id: designationId === ' ' ? '' : designationId,
             status,
+            per_page: perPage,
+        }, { preserveState: true, preserveScroll: true });
+    }
+
+    function changePerPage(value: string) {
+        setPerPage(value);
+        router.get(employees.index().url, {
+            search,
+            department_id: departmentId === ' ' ? '' : departmentId,
+            designation_id: designationId === ' ' ? '' : designationId,
+            status,
+            per_page: value,
         }, { preserveState: true, preserveScroll: true });
     }
 
@@ -192,20 +207,41 @@ export default function Index() {
                     </CardContent>
                 </Card>
 
-                {data.last_page > 1 && (
-                    <div className="flex items-center justify-center gap-2">
-                        {data.links.map((link, i) => (
-                            <Button
-                                key={i}
-                                variant={link.active ? 'default' : 'outline'}
-                                size="sm"
-                                disabled={!link.url}
-                                onClick={() => { if (link.url) router.get(link.url, {}, { preserveState: true, preserveScroll: true }); }}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                            />
-                        ))}
+                {data.last_page > 1 || data.total > 0 ? (
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">
+                                {data.total > 0
+                                    ? `Showing ${data.from ?? 0}–${data.to ?? 0} of ${data.total}`
+                                    : 'No results'}
+                            </span>
+                            <Select value={perPage} onValueChange={changePerPage}>
+                                <SelectTrigger className="w-28">
+                                    <SelectValue placeholder="Per page" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {PER_PAGE_OPTIONS.map((size) => (
+                                        <SelectItem key={size} value={size}>{size} / page</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        {data.last_page > 1 && (
+                            <div className="flex items-center gap-2">
+                                {data.links.map((link, i) => (
+                                    <Button
+                                        key={i}
+                                        variant={link.active ? 'default' : 'outline'}
+                                        size="sm"
+                                        disabled={!link.url}
+                                        onClick={() => { if (link.url) router.get(link.url, {}, { preserveState: true, preserveScroll: true }); }}
+                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
-                )}
+                ) : null}
             </div>
         </>
     );

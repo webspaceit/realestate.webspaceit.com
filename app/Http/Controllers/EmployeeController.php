@@ -9,12 +9,19 @@ use App\Models\Designation;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
+        $validated = $request->validate([
+            'per_page' => ['nullable', 'integer', Rule::in([10, 25, 50, 100])],
+        ]);
+
+        $perPage = $validated['per_page'] ?? 10;
+
         $employees = Employee::query()
             ->when($request->search, fn ($q, $search) => $q->whereAny(['employee_id', 'full_name', 'email', 'mobile'], 'like', "%{$search}%"))
             ->when($request->department_id, fn ($q, $dept) => $q->where('department_id', $dept))
@@ -22,14 +29,14 @@ class EmployeeController extends Controller
             ->when($request->status, fn ($q, $status) => $q->where('status', $status))
             ->with(['department:id,name', 'designation:id,name'])
             ->orderBy('full_name')
-            ->paginate(10)
+            ->paginate($perPage)
             ->withQueryString();
 
         return Inertia::render('employees/index', [
             'employees' => $employees,
             'departments' => Department::orderBy('name')->get(['id', 'name']),
             'designations' => Designation::orderBy('name')->get(['id', 'name']),
-            'filters' => $request->only(['search', 'department_id', 'designation_id', 'status']),
+            'filters' => $request->only(['search', 'department_id', 'designation_id', 'status', 'per_page']),
         ]);
     }
 
