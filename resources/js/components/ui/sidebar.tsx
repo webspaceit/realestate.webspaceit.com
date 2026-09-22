@@ -361,17 +361,25 @@ function SidebarSeparator({
   )
 }
 
-function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
+function SidebarContent({ className, children, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sidebar-content"
       data-sidebar="content"
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "relative flex min-h-0 flex-1 flex-col gap-2 overflow-auto pb-10 group-data-[collapsible=icon]:overflow-hidden",
         className
       )}
       {...props}
-    />
+    >
+      {children}
+      {/* Soft fade hinting at more menu content below the fold */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-10 group-data-[collapsible=icon]:hidden"
+        style={{ background: 'linear-gradient(to top, var(--sidebar-to), transparent)' }}
+      />
+    </div>
   )
 }
 

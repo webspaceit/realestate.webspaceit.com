@@ -164,3 +164,26 @@
 [data-sidebar='sidebar'] {
     background: linear-gradient(180deg, var(--sidebar-from) 0%, var(--sidebar-via) 50%, var(--sidebar-to) 100%) !important;
 }
+
+/* Slim, subtle scrollbar for the sidebar menu (replaces the default thick one) */
+[data-sidebar='content'] {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.25) transparent;
+}
+
+[data-sidebar='content']::-webkit-scrollbar {
+    width: 5px;
+}
+
+[data-sidebar='content']::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+[data-sidebar='content']::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 0.25);
+    border-radius: 9999px;
+}
+
+[data-sidebar='content']::-webkit-scrollbar-thumb:hover {
+    background: rgb(255 255 255 / 0.45);
+}

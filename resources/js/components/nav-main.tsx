@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import { ChevronRight, GripVertical } from 'lucide-react';
 import {
     Collapsible,
@@ -22,7 +23,15 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableNavItem({ item }: { item: NavItem }) {
+function SortableNavItem({
+    item,
+    open,
+    onOpenChange,
+}: {
+    item: NavItem;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}) {
     const { isCurrentUrl } = useCurrentUrl();
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: item.id! });
     const hasSubItems = item.items && item.items.length > 0;
@@ -60,7 +69,8 @@ function SortableNavItem({ item }: { item: NavItem }) {
         <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.items!.some(i => isCurrentUrl(i.href))}
+            open={open}
+            onOpenChange={onOpenChange}
             className="group/collapsible"
         >
             <SidebarMenuItem>
@@ -74,6 +84,7 @@ function SortableNavItem({ item }: { item: NavItem }) {
                                 {item.icon && <item.icon />}
                                 <span>{item.title}</span>
                                 <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                                <span className="text-sidebar-foreground/40 ml-1 text-xs font-normal">{item.items!.length}</span>
                             </SidebarMenuButton>
                         </CollapsibleTrigger>
                     </div>
@@ -102,6 +113,31 @@ export function NavMain({ items = [], onReorder }: { items: NavItem[]; onReorder
         useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     );
 
+    const { currentUrl, isCurrentUrl } = useCurrentUrl();
+
+    // Which group is expanded? Only one at a time (accordion). Starts with the
+    // group containing the current page and follows navigation.
+    const [openGroup, setOpenGroup] = useState<string | null>(() => {
+        const active = items.find((i) => i.items?.some((s) => isCurrentUrl(s.href, currentUrl)));
+        return active?.id ?? null;
+    });
+
+    useEffect(() => {
+        const active = items.find((i) => i.items?.some((s) => isCurrentUrl(s.href, currentUrl)));
+        setOpenGroup((prev) => active?.id ?? prev);
+    }, [currentUrl, items, isCurrentUrl]);
+
+    // Keep the active item visible: reveal it when its group opens and scroll
+    // it into view after the expand animation settles.
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            document
+                .querySelector('[data-sidebar="content"] [data-active="true"]')
+                ?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }, 180);
+        return () => clearTimeout(timer);
+    }, [currentUrl, openGroup]);
+
     function handleDragEnd(event: DragEndEvent) {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
@@ -128,7 +164,12 @@ export function NavMain({ items = [], onReorder }: { items: NavItem[]; onReorder
                 >
                     <SortableContext items={items.map((i) => i.id!)} strategy={verticalListSortingStrategy}>
                         {items.map((item) => (
-                            <SortableNavItem key={item.id} item={item} />
+                            <SortableNavItem
+                                key={item.id}
+                                item={item}
+                                open={item.id === openGroup}
+                                onOpenChange={(isOpen) => setOpenGroup(isOpen ? item.id : null)}
+                            />
                         ))}
                     </SortableContext>
                 </DndContext>
