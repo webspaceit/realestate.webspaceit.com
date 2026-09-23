@@ -116,7 +116,6 @@ const defaultNavItems: NavItem[] = [
             { id: 'meetings', title: 'Meetings & Site Visits', href: meetings.index().url, icon: Calendar },
             { id: 'crm-clients', title: 'Clients', href: flatOwners.index().url, icon: ContactRound },
             { id: 'crm-bookings', title: 'Flat Bookings', href: bookings.index().url, icon: CalendarCheck },
-            { id: 'crm-documents', title: 'Documents', href: documents.index().url, icon: FileText },
             { id: 'crm-reports', title: 'Reports', href: crm.reports().url, icon: BarChart3 },
         ],
     },
@@ -251,7 +250,7 @@ const defaultNavItems: NavItem[] = [
     },
     {
         id: 'project-document',
-        title: 'Project Wise Documents',
+        title: 'Project Documents',
         href: documents.index().url,
         icon: FileText,
         items: [
