@@ -77,7 +77,7 @@ export default function Edit() {
                                 <div className="space-y-2">
                                     <Label htmlFor="role">Role</Label>
                                     <Select value={form.role} onValueChange={(v) => set('role', v)}>
-                                        <SelectTrigger id="role"><SelectValue /></SelectTrigger>
+                                        <SelectTrigger id="role"><SelectValue placeholder="Select Role..." /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="admin">Admin</SelectItem>
                                             <SelectItem value="manager">Manager</SelectItem>

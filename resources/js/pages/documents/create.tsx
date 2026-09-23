@@ -197,14 +197,14 @@ export default function Create() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <SearchableSelect
                                 label="Project"
-                                placeholder="----- Select -----"
+                                placeholder="Select Project..."
                                 options={projects.map((p) => ({ value: String(p.id), label: p.name }))}
                                 value={projectId}
                                 onChange={handleProjectChange}
                             />
                             <SearchableSelect
                                 label="Building"
-                                placeholder="----- Select -----"
+                                placeholder="Select Building..."
                                 disabled={!projectId}
                                 options={filteredBuildings.map((b) => ({ value: String(b.id), label: b.name }))}
                                 value={buildingId}
@@ -215,7 +215,7 @@ export default function Create() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <SearchableSelect
                                 label="Category"
-                                placeholder="----- Select -----"
+                                placeholder="Select Category..."
                                 disabled={!buildingId}
                                 options={categories.map((c) => ({ value: c.name, label: c.name }))}
                                 value={category}
@@ -223,7 +223,7 @@ export default function Create() {
                             />
                             <SearchableSelect
                                 label="Sub Category"
-                                placeholder="----- Select -----"
+                                placeholder="Select Sub Category..."
                                 disabled={!category}
                                 options={filteredSubcategories.map((s) => ({ value: String(s.id), label: s.name }))}
                                 value={subcategoryId}

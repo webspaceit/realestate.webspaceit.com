@@ -85,21 +85,21 @@ export default function Create() {
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <SearchableSelect
                                     label="Contractor"
-                                    placeholder="Select contractor"
+                                    placeholder="Select Contractor..."
                                     value={form.contractor_id}
                                     onChange={(v) => set('contractor_id', v)}
                                     options={contractors.map((c) => ({ value: String(c.id), label: c.company_name }))}
                                 />
                                 <SearchableSelect
                                     label="Project"
-                                    placeholder="Select project"
+                                    placeholder="Select Project..."
                                     value={form.project_id}
                                     onChange={(v) => set('project_id', v)}
                                     options={projects.map((p) => ({ value: String(p.id), label: p.name }))}
                                 />
                                 <SearchableSelect
                                     label="Task (optional)"
-                                    placeholder="Select task"
+                                    placeholder="Select Task..."
                                     value={form.task_id}
                                     onChange={(v) => set('task_id', v)}
                                     options={[{ value: ' ', label: 'No task' }]}
@@ -119,7 +119,7 @@ export default function Create() {
                                 <div className="space-y-2">
                                     <Label htmlFor="status">Status</Label>
                                     <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder="Select Status..." /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="pending">Pending</SelectItem>
                                             <SelectItem value="active">Active</SelectItem>

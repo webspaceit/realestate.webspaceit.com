@@ -100,7 +100,7 @@ export default function Create({ buildings, projects, bulkUnits }: { buildings: 
                                 onValueChange={(v) => setData(prev => ({ ...prev, project_id: v, building_id: '' }))}
                             >
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select project" />
+                                    <SelectValue placeholder="Select Project..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="">None</SelectItem>
@@ -119,7 +119,7 @@ export default function Create({ buildings, projects, bulkUnits }: { buildings: 
                                 onValueChange={(v) => handleChange('building_id', v)}
                             >
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder={data.project_id ? 'Select building' : 'Select project first'} />
+                                    <SelectValue placeholder={data.project_id ? 'Select Building...' : 'Select Project First...'} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {filteredBuildings.map((building) => (
@@ -216,7 +216,7 @@ export default function Create({ buildings, projects, bulkUnits }: { buildings: 
                                         onValueChange={(v) => handleChange('parking', v)}
                                     >
                                         <SelectTrigger className="w-full">
-                                            <SelectValue />
+                                            <SelectValue placeholder="Select Parking..." />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="Available">Available</SelectItem>
@@ -244,7 +244,7 @@ export default function Create({ buildings, projects, bulkUnits }: { buildings: 
                                 onValueChange={(v) => handleChange('status', v)}
                             >
                                 <SelectTrigger className="w-full">
-                                    <SelectValue />
+                                    <SelectValue placeholder="Select Status..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="available">Available</SelectItem>

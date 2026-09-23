@@ -115,7 +115,7 @@ export default function Create({ clients, units }: { clients: Client[]; units: U
                                     <Label htmlFor="booking_type">Booking Type</Label>
                                     <Select value={bookingType} onValueChange={setBookingType}>
                                         <SelectTrigger id="booking_type">
-                                            <SelectValue />
+                                            <SelectValue placeholder="Select Booking Type..." />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="booking">Booking</SelectItem>
@@ -135,7 +135,7 @@ export default function Create({ clients, units }: { clients: Client[]; units: U
                                     <Label htmlFor="status">Status</Label>
                                     <Select value={status} onValueChange={setStatus}>
                                         <SelectTrigger id="status">
-                                            <SelectValue />
+                                            <SelectValue placeholder="Select Status..." />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="pending">Pending</SelectItem>

@@ -69,7 +69,7 @@ export default function PurchaseCreate() {
                             <div className="space-y-2">
                                 <Label htmlFor="material_id">Material</Label>
                                 <Select value={form.material_id} onValueChange={v => setForm(f => ({ ...f, material_id: v }))}>
-                                    <SelectTrigger><SelectValue placeholder="Select material" /></SelectTrigger>
+                                    <SelectTrigger><SelectValue placeholder="Select Material..." /></SelectTrigger>
                                     <SelectContent>
                                         {materials.map(m => <SelectItem key={m.id} value={String(m.id)}>{m.name}</SelectItem>)}
                                     </SelectContent>
@@ -78,7 +78,7 @@ export default function PurchaseCreate() {
                             <div className="space-y-2">
                                 <Label htmlFor="supplier_id">Supplier</Label>
                                 <Select value={form.supplier_id} onValueChange={v => setForm(f => ({ ...f, supplier_id: v }))}>
-                                    <SelectTrigger><SelectValue placeholder="Select supplier" /></SelectTrigger>
+                                    <SelectTrigger><SelectValue placeholder="Select Supplier..." /></SelectTrigger>
                                     <SelectContent>
                                         {suppliers.map(s => <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>)}
                                     </SelectContent>
@@ -103,7 +103,7 @@ export default function PurchaseCreate() {
                             <div className="space-y-2">
                                 <Label htmlFor="status">Status</Label>
                                 <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v }))}>
-                                    <SelectTrigger><SelectValue placeholder="Select status" /></SelectTrigger>
+                                    <SelectTrigger><SelectValue placeholder="Select Status..." /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="pending">Pending</SelectItem>
                                         <SelectItem value="approved">Approved</SelectItem>

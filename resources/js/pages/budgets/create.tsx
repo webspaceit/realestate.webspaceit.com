@@ -58,7 +58,7 @@ export default function BudgetCreate() {
                             <div className="space-y-2">
                                 <Label htmlFor="project_id">Project</Label>
                                 <Select value={form.project_id} onValueChange={v => setForm(f => ({ ...f, project_id: v }))}>
-                                    <SelectTrigger><SelectValue placeholder="Select project" /></SelectTrigger>
+                                    <SelectTrigger><SelectValue placeholder="Select Project..." /></SelectTrigger>
                                     <SelectContent>
                                         {projects.map(p => <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>)}
                                     </SelectContent>
@@ -67,7 +67,7 @@ export default function BudgetCreate() {
                             <div className="space-y-2">
                                 <Label htmlFor="phase_id">Phase (optional)</Label>
                                 <Select value={form.phase_id} onValueChange={v => setForm(f => ({ ...f, phase_id: v }))}>
-                                    <SelectTrigger><SelectValue placeholder="Select phase" /></SelectTrigger>
+                                    <SelectTrigger><SelectValue placeholder="Select Phase..." /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="">No phase</SelectItem>
                                         {phases.map(p => <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>)}

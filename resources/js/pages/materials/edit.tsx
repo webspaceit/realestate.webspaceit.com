@@ -92,7 +92,7 @@ export default function Edit() {
                                 <div className="space-y-2">
                                     <Label htmlFor="category">Category</Label>
                                     <Select value={form.category} onValueChange={(v) => set('category', v)}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder="Select Category..." /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="raw materials">Raw Materials</SelectItem>
                                             <SelectItem value="finishing">Finishing</SelectItem>

@@ -55,7 +55,7 @@ export default function Create() {
                                 <Label htmlFor="category">Main Category</Label>
                                 <Select value={form.document_category_id} onValueChange={(v) => setForm({ ...form, document_category_id: v })}>
                                     <SelectTrigger id="category">
-                                        <SelectValue placeholder="Select category" />
+                                        <SelectValue placeholder="Select Category..." />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((c) => (

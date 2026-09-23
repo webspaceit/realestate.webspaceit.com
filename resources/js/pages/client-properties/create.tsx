@@ -86,7 +86,7 @@ export default function Create() {
                             <Label htmlFor="client_id">Client</Label>
                             <Select value={clientId} onValueChange={setClientId} required>
                                 <SelectTrigger id="client_id">
-                                    <SelectValue placeholder="Select a client" />
+                                    <SelectValue placeholder="Select Client..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {clients.map((c) => (
@@ -102,7 +102,7 @@ export default function Create() {
                             <Label htmlFor="unit_id">Unit</Label>
                             <Select value={unitId} onValueChange={setUnitId} required>
                                 <SelectTrigger id="unit_id">
-                                    <SelectValue placeholder="Select a unit" />
+                                    <SelectValue placeholder="Select Unit..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {units.map((u) => (

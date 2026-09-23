@@ -128,7 +128,7 @@ export default function Edit() {
                             <div>
                                 <SearchableSelect
                                     label="Project Type"
-                                    placeholder="Select project type"
+                                    placeholder="Select Project Type..."
                                     options={projectTypes.map(pt => ({ value: String(pt.id), label: pt.name }))}
                                     value={form.project_type_id}
                                     onChange={(v) => setForm({ ...form, project_type_id: v })}
@@ -141,7 +141,7 @@ export default function Edit() {
                             <div>
                                 <SearchableSelect
                                     label="Status"
-                                    placeholder="Select status"
+                                    placeholder="Select Status..."
                                     options={[
                                         { value: 'planning', label: 'Planning' },
                                         { value: 'in_progress', label: 'In Progress' },
@@ -201,7 +201,7 @@ export default function Edit() {
                             <div className="col-span-2">
                                 <SearchableSelect
                                     label="Rajuk Permission Status"
-                                    placeholder="Select status"
+                                    placeholder="Select Rajuk Permission Status..."
                                     options={[
                                         { value: 'not_submitted', label: 'Not Submitted' },
                                         { value: 'file_submitted', label: 'File Submitted' },
@@ -220,7 +220,7 @@ export default function Edit() {
                                 <div className="grid grid-cols-3 gap-4 mb-4">
                                     <SearchableSelect
                                         label="Division"
-                                        placeholder="Select division"
+                                        placeholder="Select Division..."
                                         options={divisions.map(d => ({ value: String(d.id), label: d.name }))}
                                         value={form.division_id}
                                         onChange={(v) => setForm({ ...form, division_id: v, district_id: '', thana_id: '' })}

@@ -84,7 +84,7 @@ export default function Edit({ building }: { building: Building }) {
                             <div className="col-span-2">
                                 <SearchableSelect
                                     label="Project"
-                                    placeholder="Select project"
+                                    placeholder="Select Project..."
                                     options={projects.map(p => ({ value: String(p.id), label: p.name }))}
                                     value={data.project_id}
                                     onChange={(v) => handleChange('project_id', v)}
@@ -127,7 +127,7 @@ export default function Edit({ building }: { building: Building }) {
                                     onValueChange={(v) => handleChange('status', v)}
                                 >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue />
+                                        <SelectValue placeholder="Select Status..." />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="planned">Planned</SelectItem>

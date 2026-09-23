@@ -219,7 +219,7 @@ export default function Edit() {
                                 <Label htmlFor="user_id">User (optional)</Label>
                                 <Select value={userId} onValueChange={setUserId}>
                                     <SelectTrigger id="user_id">
-                                        <SelectValue />
+                                        <SelectValue placeholder="Select User..." />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="">None</SelectItem>
@@ -520,14 +520,14 @@ export default function Edit() {
                         <CardContent className="grid grid-cols-3 gap-4">
                             <SearchableSelect
                                 label="Project"
-                                placeholder="Select project"
+                                placeholder="Select Project..."
                                 options={projects.map(p => ({ value: String(p.id), label: p.name }))}
                                 value={projectId}
                                 onChange={(v) => { setProjectId(v); setBuildingId(''); setUnitId('') }}
                             />
                             <SearchableSelect
                                 label="Building"
-                                placeholder={projectId ? 'Select building' : 'Select project first'}
+                                placeholder={projectId ? 'Select Building...' : 'Select Project First...'}
                                 disabled={!projectId}
                                 options={filteredBuildings.map(b => ({ value: String(b.id), label: b.name }))}
                                 value={buildingId}

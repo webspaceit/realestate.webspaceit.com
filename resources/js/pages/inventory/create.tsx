@@ -65,7 +65,7 @@ export default function InventoryCreate() {
                             <div className="space-y-2">
                                 <Label htmlFor="material_id">Material</Label>
                                 <Select value={form.material_id} onValueChange={v => setForm(f => ({ ...f, material_id: v }))}>
-                                    <SelectTrigger><SelectValue placeholder="Select material" /></SelectTrigger>
+                                    <SelectTrigger><SelectValue placeholder="Select Material..." /></SelectTrigger>
                                     <SelectContent>
                                         {materials.map(m => (
                                             <SelectItem key={m.id} value={String(m.id)}>{m.name} ({m.unit})</SelectItem>

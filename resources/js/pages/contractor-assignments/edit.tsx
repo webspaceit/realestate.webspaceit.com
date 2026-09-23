@@ -96,7 +96,7 @@ export default function Edit() {
                                 <div className="space-y-2">
                                     <Label htmlFor="contractor_id">Contractor</Label>
                                     <Select value={form.contractor_id} onValueChange={(v) => set('contractor_id', v)}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder="Select Contractor..." /></SelectTrigger>
                                         <SelectContent>
                                             {contractors.map((c) => (
                                                 <SelectItem key={c.id} value={String(c.id)}>{c.company_name}</SelectItem>
@@ -107,7 +107,7 @@ export default function Edit() {
                                 <div className="space-y-2">
                                     <Label htmlFor="project_id">Project</Label>
                                     <Select value={form.project_id} onValueChange={(v) => set('project_id', v)}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder="Select Project..." /></SelectTrigger>
                                         <SelectContent>
                                             {projects.map((p) => (
                                                 <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
@@ -118,7 +118,7 @@ export default function Edit() {
                                 <div className="space-y-2">
                                     <Label htmlFor="task_id">Task (optional)</Label>
                                     <Select value={form.task_id} onValueChange={(v) => set('task_id', v)}>
-                                        <SelectTrigger><SelectValue placeholder="No task" /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder="Select Task..." /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value=" ">No task</SelectItem>
                                         {tasks?.map((t) => (
@@ -142,7 +142,7 @@ export default function Edit() {
                                 <div className="space-y-2">
                                     <Label htmlFor="status">Status</Label>
                                     <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder="Select Status..." /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="pending">Pending</SelectItem>
                                             <SelectItem value="active">Active</SelectItem>

@@ -96,7 +96,7 @@ export default function Edit() {
                             <Label htmlFor="client_id">Client</Label>
                             <Select value={clientId} onValueChange={setClientId} required>
                                 <SelectTrigger id="client_id">
-                                    <SelectValue />
+                                    <SelectValue placeholder="Select Client..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {clients.map((c) => (
@@ -112,7 +112,7 @@ export default function Edit() {
                             <Label htmlFor="unit_id">Unit</Label>
                             <Select value={unitId} onValueChange={setUnitId} required>
                                 <SelectTrigger id="unit_id">
-                                    <SelectValue />
+                                    <SelectValue placeholder="Select Unit..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {units.map((u) => (

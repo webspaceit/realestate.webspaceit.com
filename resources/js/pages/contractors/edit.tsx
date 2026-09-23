@@ -119,7 +119,7 @@ export default function Edit() {
                                 <div className="space-y-2">
                                     <Label htmlFor="status">Work Status</Label>
                                     <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder="Select Work Status..." /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="active">Active</SelectItem>
                                             <SelectItem value="inactive">Inactive</SelectItem>

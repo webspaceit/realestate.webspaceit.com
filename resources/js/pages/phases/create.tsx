@@ -96,7 +96,7 @@ export default function Create() {
                             <div>
                                 <Label htmlFor="project_id">Project</Label>
                                 <select id="project_id" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={form.project_id} onChange={e => setForm({ ...form, project_id: e.target.value })} required>
-                                    <option value="">Select project</option>
+                                    <option value="">Select Project...</option>
                                     {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                                 </select>
                             </div>

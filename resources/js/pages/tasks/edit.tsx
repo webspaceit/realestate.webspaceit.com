@@ -83,7 +83,7 @@ export default function Edit() {
                             <div>
                                 <Label htmlFor="phase_id">Phase</Label>
                                 <select id="phase_id" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={form.phase_id} onChange={e => setForm({ ...form, phase_id: e.target.value })} required>
-                                    <option value="">Select phase</option>
+                                    <option value="">Select Phase...</option>
                                     {phases.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                                 </select>
                             </div>
