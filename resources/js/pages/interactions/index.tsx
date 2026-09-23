@@ -88,7 +88,7 @@ export default function Index() {
                         <div className="w-44 space-y-1">
                             <Label>Type</Label>
                             <Select value={type} onValueChange={(v) => { setType(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
-                                <SelectTrigger><SelectValue placeholder="All types" /></SelectTrigger>
+                                <SelectTrigger><SelectValue placeholder="Select Type..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All types</SelectItem>
                                     {types.map((t) => (

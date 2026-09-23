@@ -115,7 +115,7 @@ export default function Index() {
                         <div className="w-52 space-y-1">
                             <Label>Stage</Label>
                             <Select value={stage} onValueChange={(v) => { setStage(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
-                                <SelectTrigger><SelectValue placeholder="All stages" /></SelectTrigger>
+                                <SelectTrigger><SelectValue placeholder="Select Stage..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All stages</SelectItem>
                                     {stages.map((s) => (
@@ -127,7 +127,7 @@ export default function Index() {
                         <div className="w-52 space-y-1">
                             <Label>Source</Label>
                             <Select value={source} onValueChange={(v) => { setSource(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
-                                <SelectTrigger><SelectValue placeholder="All sources" /></SelectTrigger>
+                                <SelectTrigger><SelectValue placeholder="Select Source..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All sources</SelectItem>
                                     {sources.map((s) => (
@@ -139,7 +139,7 @@ export default function Index() {
                         <div className="w-52 space-y-1">
                             <Label>Assigned To</Label>
                             <Select value={assignedToId} onValueChange={(v) => { setAssignedToId(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
-                                <SelectTrigger><SelectValue placeholder="All users" /></SelectTrigger>
+                                <SelectTrigger><SelectValue placeholder="Select User..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All users</SelectItem>
                                     {users.map((u) => (
