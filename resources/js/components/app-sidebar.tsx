@@ -244,8 +244,14 @@ const defaultNavItems: NavItem[] = [
         icon: () => <span className="text-sm font-bold">৳</span>,
     },
     {
+        id: 'flat-owners-detail',
+        title: 'Flat Owners Detail',
+        href: flatOwners.index().url,
+        icon: UserCircle,
+    },
+    {
         id: 'project-document',
-        title: 'Project Document',
+        title: 'Project Wise Documents',
         href: documents.index().url,
         icon: FileText,
         items: [
@@ -253,12 +259,6 @@ const defaultNavItems: NavItem[] = [
             { id: 'category', title: 'Category', href: documentCategories.index().url, icon: List },
             { id: 'sub-categories', title: 'Sub Categories', href: subcategories.index().url, icon: List },
         ],
-    },
-    {
-        id: 'flat-owners-detail',
-        title: 'Flat Owners Detail',
-        href: flatOwners.index().url,
-        icon: UserCircle,
     },
     {
         id: 'payment-terms',
