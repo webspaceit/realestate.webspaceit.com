@@ -144,7 +144,7 @@ export default function Show() {
                     <CardHeader><CardTitle className="flex items-center gap-2"><DollarSign className="size-4" />Booking Details</CardTitle></CardHeader>
                     <CardContent>
                         <dl className="grid grid-cols-3 gap-4 text-sm">
-                            <div><dt className="text-muted-foreground">Booking Date</dt><dd className="font-medium">{booking.booking_date}</dd></div>
+                            <div><dt className="text-muted-foreground">Booking Date</dt><dd className="font-medium">{booking.booking_date ? booking.booking_date.slice(0, 10) : '-'}</dd></div>
                             <div><dt className="text-muted-foreground">Down Payment</dt><dd className="font-medium">{booking.down_payment ? `৳${Number(booking.down_payment).toLocaleString('en-US')}` : '-'}</dd></div>
                             <div><dt className="text-muted-foreground">Total Price</dt><dd className="font-medium">{booking.total_price ? `৳${Number(booking.total_price).toLocaleString('en-US')}` : '-'}</dd></div>
                             {booking.notes && <div className="col-span-3"><dt className="text-muted-foreground">Notes</dt><dd className="mt-1 whitespace-pre-wrap">{booking.notes}</dd></div>}

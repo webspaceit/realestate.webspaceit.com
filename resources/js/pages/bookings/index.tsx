@@ -180,7 +180,7 @@ export default function Index({
                                             {booking.booking_type}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>{booking.booking_date}</TableCell>
+                                    <TableCell>{booking.booking_date ? booking.booking_date.slice(0, 10) : '-'}</TableCell>
                                     <TableCell>{booking.down_payment ? `৳${Number(booking.down_payment).toLocaleString('en-US')}` : '-'}</TableCell>
                                     <TableCell>
                                         <Badge variant={statusVariant(booking.status)}>

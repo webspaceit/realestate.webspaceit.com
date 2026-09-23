@@ -48,7 +48,7 @@ export default function Edit({ booking, clients, units }: { booking: Booking; cl
     const [clientId, setClientId] = useState(String(booking.client_id));
     const [unitId, setUnitId] = useState(String(booking.unit_id));
     const [bookingType, setBookingType] = useState(booking.booking_type);
-    const [bookingDate, setBookingDate] = useState(booking.booking_date);
+    const [bookingDate, setBookingDate] = useState(booking.booking_date ? booking.booking_date.slice(0, 10) : '');
     const [status, setStatus] = useState(booking.status);
     const [downPayment, setDownPayment] = useState(booking.down_payment?.toString() || '');
     const [totalPrice, setTotalPrice] = useState(booking.total_price?.toString() || '');
