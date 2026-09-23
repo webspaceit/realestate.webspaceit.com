@@ -249,20 +249,6 @@ return [
             'columns' => ['employee', 'incident_type', 'action_taken', 'status'],
         ],
 
-        'crm' => [
-            'title' => 'Customer Relationship Management',
-            'fields' => [
-                ['key' => 'customer_name', 'label' => 'Customer Name', 'type' => 'text', 'required' => true],
-                ['key' => 'company', 'label' => 'Company', 'type' => 'text'],
-                ['key' => 'contact', 'label' => 'Contact', 'type' => 'text'],
-                ['key' => 'interest', 'label' => 'Interest / Requirement', 'type' => 'text'],
-                ['key' => 'follow_up_date', 'label' => 'Follow-up Date', 'type' => 'date'],
-                ['key' => 'notes', 'label' => 'Notes', 'type' => 'textarea'],
-                ['key' => 'status', 'label' => 'Status', 'type' => 'select', 'options' => ['New', 'Contacted', 'Follow-up', 'Negotiation', 'Won', 'Lost']],
-            ],
-            'columns' => ['customer_name', 'company', 'contact', 'follow_up_date', 'status'],
-        ],
-
         'learning_management' => [
             'title' => 'Learning Management',
             'fields' => [

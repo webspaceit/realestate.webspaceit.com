@@ -45,6 +45,11 @@ import {
     ArrowLeftRight,
     Megaphone,
     TrendingUp,
+    ContactRound,
+    PhoneCall,
+    MessageSquare,
+    HardHat,
+    Gauge,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -62,11 +67,15 @@ import {
 import { dashboard } from '@/routes';
 import bookings from '@/routes/bookings';
 import buildings from '@/routes/buildings';
+import crm from '@/routes/crm';
 import departments from '@/routes/departments';
 import designations from '@/routes/designations';
 import employees from '@/routes/employees';
 import flats from '@/routes/flats';
 import hr from '@/routes/hr';
+import interactions from '@/routes/interactions';
+import leads from '@/routes/leads';
+import meetings from '@/routes/meetings';
 import phases from '@/routes/phases';
 import milestones from '@/routes/milestones';
 import projectTypes from '@/routes/project-types';
@@ -94,6 +103,22 @@ const defaultNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard().url,
         icon: LayoutGrid,
+    },
+    {
+        id: 'crm',
+        title: 'CRM',
+        href: crm.dashboard().url,
+        icon: Handshake,
+        items: [
+            { id: 'crm-dashboard', title: 'CRM Dashboard', href: crm.dashboard().url, icon: Gauge },
+            { id: 'leads', title: 'Leads & Opportunities', href: leads.index().url, icon: Target },
+            { id: 'interactions', title: 'Interactions', href: interactions.index().url, icon: MessageSquare },
+            { id: 'meetings', title: 'Meetings & Site Visits', href: meetings.index().url, icon: Calendar },
+            { id: 'crm-clients', title: 'Clients', href: flatOwners.index().url, icon: ContactRound },
+            { id: 'crm-projects', title: 'Projects', href: projects.index().url, icon: FolderGit2 },
+            { id: 'crm-contractors', title: 'Contractors', href: contractors.index().url, icon: HardHat },
+            { id: 'crm-documents', title: 'Documents', href: documents.index().url, icon: FileText },
+        ],
     },
     {
         id: 'users',
@@ -129,7 +154,6 @@ const defaultNavItems: NavItem[] = [
             { id: 'attend-leave', title: 'Attend & Leave', href: hr.index('attend_leaves').url, icon: Timer },
             { id: 'perform-management', title: 'Perform Management', href: hr.index('performance_management').url, icon: Target },
             { id: 'discipline-management', title: 'Discipline Management', href: hr.index('discipline_management').url, icon: Gavel },
-            { id: 'crm', title: 'Customer Relationship Management', href: hr.index('crm').url, icon: Handshake },
             { id: 'learning-management', title: 'Learning Management', href: hr.index('learning_management').url, icon: BookOpen },
             { id: 'accounts-fin', title: 'Accounts & Fin', href: hr.index('accounts_finance').url, icon: Calculator },
             { id: 'inventory-management', title: 'Inventory Management', href: inventory.index().url, icon: ShoppingCart },

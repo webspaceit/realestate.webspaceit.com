@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientPropertyController;
 use App\Http\Controllers\ContractorAssignmentController;
 use App\Http\Controllers\ContractorController;
+use App\Http\Controllers\CrmController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\DocumentController;
@@ -16,9 +17,12 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HrRecordController;
+use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\LeadController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialPurchaseController;
+use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PaymentTermController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectMilestoneController;
@@ -92,6 +96,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('hr/{module}/{record}', [HrRecordController::class, 'edit'])->name('hr.edit');
     Route::match(['put', 'patch'], 'hr/{module}/{record}', [HrRecordController::class, 'update'])->name('hr.update');
     Route::delete('hr/{module}/{record}', [HrRecordController::class, 'destroy'])->name('hr.destroy');
+
+    // ---- CRM module ----
+    Route::get('crm', [CrmController::class, 'dashboard'])->name('crm.dashboard');
+    Route::resource('leads', LeadController::class);
+    Route::resource('interactions', InteractionController::class)->except(['show']);
+    Route::resource('meetings', MeetingController::class)->except(['show']);
 
     Route::get('files/{path}', function (string $path) {
         $fullPath = storage_path('app/public/' . $path);
