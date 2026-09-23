@@ -115,9 +115,9 @@ const defaultNavItems: NavItem[] = [
             { id: 'interactions', title: 'Interactions', href: interactions.index().url, icon: MessageSquare },
             { id: 'meetings', title: 'Meetings & Site Visits', href: meetings.index().url, icon: Calendar },
             { id: 'crm-clients', title: 'Clients', href: flatOwners.index().url, icon: ContactRound },
-            { id: 'crm-projects', title: 'Projects', href: projects.index().url, icon: FolderGit2 },
-            { id: 'crm-contractors', title: 'Contractors', href: contractors.index().url, icon: HardHat },
+            { id: 'crm-bookings', title: 'Flat Bookings', href: bookings.index().url, icon: CalendarCheck },
             { id: 'crm-documents', title: 'Documents', href: documents.index().url, icon: FileText },
+            { id: 'crm-reports', title: 'Reports', href: '/crm/reports', icon: BarChart3 },
         ],
     },
     {
@@ -195,12 +195,6 @@ const defaultNavItems: NavItem[] = [
         title: 'Bulk Units',
         href: flats.bulkIndex().url,
         icon: Layers,
-    },
-    {
-        id: 'flat-bookings',
-        title: 'Flat Bookings',
-        href: bookings.index().url,
-        icon: CalendarCheck,
     },
     {
         id: 'tasks',
@@ -290,7 +284,7 @@ export function AppSidebar() {
                     setNavItems([...reordered, ...remaining]);
                 }
             })
-            .catch(() => {});
+            .catch(() => { });
     }, []);
 
     function handleReorder(items: NavItem[]) {
@@ -302,7 +296,7 @@ export function AppSidebar() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token, 'X-XSRF-TOKEN': token },
             body: JSON.stringify({ order: items.map((i) => i.id) }),
-        }).catch(() => {});
+        }).catch(() => { });
     }
 
     return (

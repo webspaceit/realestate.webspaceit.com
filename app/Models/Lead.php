@@ -20,12 +20,15 @@ class Lead extends Model
         'assigned_to_id',
         'follow_up_date',
         'notes',
+        'converted_client_id',
+        'converted_at',
     ];
 
     protected $casts = [
         'value' => 'decimal:2',
         'probability' => 'integer',
         'follow_up_date' => 'date',
+        'converted_at' => 'datetime',
     ];
 
     public function assignedTo(): BelongsTo
@@ -41,5 +44,15 @@ class Lead extends Model
     public function meetings(): HasMany
     {
         return $this->hasMany(Meeting::class);
+    }
+
+    public function convertedClient(): BelongsTo
+    {
+        return $this->belongsTo(Client::class, 'converted_client_id');
+    }
+
+    public function isConverted(): bool
+    {
+        return $this->converted_client_id !== null;
     }
 }

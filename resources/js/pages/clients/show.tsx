@@ -3,8 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { ArrowLeft, FileDown, UserCircle } from 'lucide-react'
+import { ArrowLeft, FileDown, UserCircle, PhoneCall, CalendarDays, CalendarCheck } from 'lucide-react'
 import { pdf } from '@/routes/flat-owners'
+import interactions from '@/routes/interactions'
+import meetings from '@/routes/meetings'
+import bookings from '@/routes/bookings'
 
 interface User {
     id: number
@@ -44,6 +47,35 @@ interface Nominee {
     percentage: number | null
 }
 
+interface Interaction {
+    id: number
+    type: string
+    subject: string
+    notes: string | null
+    interaction_date: string
+    recorded_by: { id: number; name: string } | null
+}
+
+interface Meeting {
+    id: number
+    title: string
+    location: string | null
+    scheduled_at: string
+    status: string
+    outcome: string | null
+    organizer: { id: number; name: string } | null
+}
+
+interface Booking {
+    id: number
+    booking_type: string
+    booking_date: string
+    status: string
+    total_price: number | null
+    down_payment: number | null
+    unit: Unit & { price?: number }
+}
+
 interface Client {
     id: number
     user?: User
@@ -68,15 +100,32 @@ interface Client {
     present_address: string
     permanent_address: string
     professional_address: string
+    address: string
+    designation: string
     photo: string | null
     photo_url: string | null
     nominees: Nominee[]
     created_at: string
     properties: ClientProperty[]
+    interactions: Interaction[]
+    meetings: Meeting[]
+    bookings: Booking[]
 }
 
 interface PageProps {
     client: Client
+}
+
+function statusBadge(s: string) {
+    if (s === 'confirmed') return 'default' as const
+    if (s === 'cancelled') return 'destructive' as const
+    return 'secondary' as const
+}
+
+function meetingBadge(s: string) {
+    if (s === 'Completed') return 'outline' as const
+    if (s === 'Cancelled') return 'destructive' as const
+    return 'default' as const
 }
 
 export default function Show() {
@@ -93,15 +142,27 @@ export default function Show() {
                         Back to Flat Owners Detail
                     </Link>
                 </Button>
-                <Button variant="outline" asChild disabled={!client.id}>
-                    <a href={client.id ? pdf(client.id).url : '#'} target="_blank" rel="noreferrer">
-                        <FileDown className="mr-2 h-4 w-4" />
-                        Download PDF
-                    </a>
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" asChild>
+                        <Link href={interactions.create().url + `?client_id=${client.id}`}>
+                            <PhoneCall className="mr-2 h-4 w-4" />Log Interaction
+                        </Link>
+                    </Button>
+                    <Button variant="outline" asChild>
+                        <Link href={meetings.create().url + `?client_id=${client.id}`}>
+                            <CalendarDays className="mr-2 h-4 w-4" />Schedule Meeting
+                        </Link>
+                    </Button>
+                    <Button variant="outline" asChild disabled={!client.id}>
+                        <a href={client.id ? pdf(client.id).url : '#'} target="_blank" rel="noreferrer">
+                            <FileDown className="mr-2 h-4 w-4" />Download PDF
+                        </a>
+                    </Button>
+                </div>
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3 mb-6">
+                {/* ── Left column: profile card ── */}
                 <Card className="lg:col-span-1">
                     <CardHeader>
                         <div className="flex flex-col items-center gap-3">
@@ -119,38 +180,21 @@ export default function Show() {
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-3">
-                        <div>
-                            <p className="text-xs text-muted-foreground">ID / Number</p>
-                            <p className="text-sm font-mono font-medium">{client.owner_id}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted-foreground">Email</p>
-                            <p className="text-sm font-medium">{client.email}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted-foreground">Phone</p>
-                            <p className="text-sm font-medium">{client.phone}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted-foreground">Mobile</p>
-                            <p className="text-sm font-medium">{client.phone_mobile || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted-foreground">Whatsapp</p>
-                            <p className="text-sm font-medium">{client.phone_whatsapp || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted-foreground">Profession</p>
-                            <p className="text-sm font-medium">{client.profession || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted-foreground">Nationality</p>
-                            <p className="text-sm font-medium">{client.nationality || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted-foreground">Date of Birth</p>
-                            <p className="text-sm font-medium">{client.date_of_birth || '-'}</p>
-                        </div>
+                        {[
+                            ['ID / Number', client.owner_id],
+                            ['Email', client.email],
+                            ['Phone', client.phone],
+                            ['Mobile', client.phone_mobile],
+                            ['Whatsapp', client.phone_whatsapp],
+                            ['Profession', client.profession],
+                            ['Nationality', client.nationality],
+                            ['Date of Birth', client.date_of_birth],
+                        ].map(([label, val]) => val ? (
+                            <div key={label}>
+                                <p className="text-xs text-muted-foreground">{label}</p>
+                                <p className="text-sm font-medium">{val}</p>
+                            </div>
+                        ) : null)}
                         {client.user && (
                             <div>
                                 <p className="text-xs text-muted-foreground">Linked User</p>
@@ -164,81 +208,36 @@ export default function Show() {
                     </CardContent>
                 </Card>
 
+                {/* ── Right column: detail cards ── */}
                 <div className="lg:col-span-2 space-y-6">
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Identification</CardTitle>
-                        </CardHeader>
+                        <CardHeader><CardTitle>Identification</CardTitle></CardHeader>
                         <CardContent className="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                                <p className="text-xs text-muted-foreground">NID No.</p>
-                                <p className="font-medium">{client.nid_no || '-'}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-muted-foreground">TIN No.</p>
-                                <p className="font-medium">{client.tin_no || '-'}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-muted-foreground">Passport No.</p>
-                                <p className="font-medium">{client.passport_no || '-'}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-muted-foreground">Driving Licence</p>
-                                <p className="font-medium">{client.driving_licence || '-'}</p>
-                            </div>
+                            {[['NID No.', client.nid_no], ['TIN No.', client.tin_no], ['Passport No.', client.passport_no], ['Driving Licence', client.driving_licence]].map(([l, v]) => (
+                                <div key={l}><p className="text-xs text-muted-foreground">{l}</p><p className="font-medium">{v || '-'}</p></div>
+                            ))}
                         </CardContent>
                     </Card>
 
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Family Information</CardTitle>
-                        </CardHeader>
+                        <CardHeader><CardTitle>Family Information</CardTitle></CardHeader>
                         <CardContent className="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                                <p className="text-xs text-muted-foreground">Father's Name</p>
-                                <p className="font-medium">{client.father_name || '-'}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-muted-foreground">Mother's Name</p>
-                                <p className="font-medium">{client.mother_name || '-'}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-muted-foreground">Spouse Name</p>
-                                <p className="font-medium">{client.spouse_name || '-'}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-muted-foreground">Spouse NID No.</p>
-                                <p className="font-medium">{client.spouse_nid_no || '-'}</p>
-                            </div>
+                            {[['Father\'s Name', client.father_name], ['Mother\'s Name', client.mother_name], ['Spouse Name', client.spouse_name], ['Spouse NID No.', client.spouse_nid_no]].map(([l, v]) => (
+                                <div key={l}><p className="text-xs text-muted-foreground">{l}</p><p className="font-medium">{v || '-'}</p></div>
+                            ))}
                         </CardContent>
                     </Card>
 
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Addresses</CardTitle>
-                        </CardHeader>
+                        <CardHeader><CardTitle>Addresses</CardTitle></CardHeader>
                         <CardContent className="space-y-3 text-sm">
-                            <div>
-                                <p className="text-xs text-muted-foreground">Address</p>
-                                <p className="font-medium">{client.address || '-'}</p>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <p className="text-xs text-muted-foreground">Present Address</p>
-                                    <p className="font-medium">{client.present_address || '-'}</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs text-muted-foreground">Permanent Address</p>
-                                    <p className="font-medium">{client.permanent_address || '-'}</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p className="text-xs text-muted-foreground">Professional Address</p>
-                                <p className="font-medium">{client.professional_address || '-'}</p>
-                            </div>
+                            {[['Address', client.address], ['Present Address', client.present_address], ['Permanent Address', client.permanent_address], ['Professional Address', client.professional_address]].map(([l, v]) => v ? (
+                                <div key={l}><p className="text-xs text-muted-foreground">{l}</p><p className="font-medium">{v}</p></div>
+                            ) : null)}
                         </CardContent>
                     </Card>
 
+                    {/* Nominees */}
                     <Card>
                         <CardHeader>
                             <CardTitle>Nominees</CardTitle>
@@ -248,34 +247,27 @@ export default function Show() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Name</TableHead>
-                                        <TableHead>Relationship</TableHead>
-                                        <TableHead>Date of Birth</TableHead>
-                                        <TableHead>Percentage</TableHead>
+                                        <TableHead>Name</TableHead><TableHead>Relationship</TableHead>
+                                        <TableHead>Date of Birth</TableHead><TableHead>Percentage</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {client.nominees.length === 0 ? (
-                                        <TableRow>
-                                            <TableCell colSpan={4} className="py-8 text-center text-muted-foreground">
-                                                No nominees added.
-                                            </TableCell>
+                                        <TableRow><TableCell colSpan={4} className="py-6 text-center text-muted-foreground">No nominees added.</TableCell></TableRow>
+                                    ) : client.nominees.map((n) => (
+                                        <TableRow key={n.id}>
+                                            <TableCell className="font-medium">{n.name}</TableCell>
+                                            <TableCell>{n.relationship}</TableCell>
+                                            <TableCell>{n.date_of_birth ? new Date(n.date_of_birth).toLocaleDateString() : '-'}</TableCell>
+                                            <TableCell>{n.percentage != null ? `${n.percentage}%` : '-'}</TableCell>
                                         </TableRow>
-                                    ) : (
-                                        client.nominees.map((nominee) => (
-                                            <TableRow key={nominee.id}>
-                                                <TableCell className="font-medium">{nominee.name}</TableCell>
-                                                <TableCell>{nominee.relationship}</TableCell>
-                                                <TableCell>{nominee.date_of_birth ? new Date(nominee.date_of_birth).toLocaleDateString() : '-'}</TableCell>
-                                                <TableCell>{nominee.percentage != null ? `${nominee.percentage}%` : '-'}</TableCell>
-                                            </TableRow>
-                                        ))
-                                    )}
+                                    ))}
                                 </TableBody>
                             </Table>
                         </CardContent>
                     </Card>
 
+                    {/* Properties */}
                     <Card>
                         <CardHeader>
                             <CardTitle>Properties</CardTitle>
@@ -285,33 +277,141 @@ export default function Show() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Project</TableHead>
-                                        <TableHead>Unit</TableHead>
-                                        <TableHead>Building</TableHead>
+                                        <TableHead>Project</TableHead><TableHead>Unit</TableHead><TableHead>Building</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {client.properties.length === 0 ? (
-                                        <TableRow>
-                                            <TableCell colSpan={3} className="py-8 text-center text-muted-foreground">
-                                                No properties assigned.
-                                            </TableCell>
+                                        <TableRow><TableCell colSpan={3} className="py-6 text-center text-muted-foreground">No properties assigned.</TableCell></TableRow>
+                                    ) : client.properties.map((cp) => (
+                                        <TableRow key={cp.id}>
+                                            <TableCell>{cp.project?.name || '-'}</TableCell>
+                                            <TableCell className="font-medium">{cp.unit.unit_number}</TableCell>
+                                            <TableCell>{cp.unit.building.name}</TableCell>
                                         </TableRow>
-                                    ) : (
-                                        client.properties.map((cp) => (
-                                            <TableRow key={cp.id}>
-                                                <TableCell>{cp.project?.name || '-'}</TableCell>
-                                                <TableCell className="font-medium">{cp.unit.unit_number}</TableCell>
-                                                <TableCell>{cp.unit.building.name}</TableCell>
-                                            </TableRow>
-                                        ))
-                                    )}
+                                    ))}
                                 </TableBody>
                             </Table>
                         </CardContent>
                     </Card>
                 </div>
             </div>
+
+            {/* ── Bookings ── */}
+            <Card className="mb-6">
+                <CardHeader>
+                    <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2"><CalendarCheck className="h-4 w-4" />Bookings</CardTitle>
+                        <Button size="sm" variant="outline" asChild>
+                            <Link href={bookings.create().url}>New Booking</Link>
+                        </Button>
+                    </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Date</TableHead><TableHead>Unit</TableHead>
+                                <TableHead>Type</TableHead><TableHead>Status</TableHead>
+                                <TableHead className="text-right">Total Price</TableHead>
+                                <TableHead className="text-right">Down Payment</TableHead>
+                                <TableHead></TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {client.bookings.length === 0 ? (
+                                <TableRow><TableCell colSpan={7} className="py-6 text-center text-muted-foreground">No bookings yet.</TableCell></TableRow>
+                            ) : client.bookings.map((b) => (
+                                <TableRow key={b.id}>
+                                    <TableCell>{b.booking_date}</TableCell>
+                                    <TableCell>{b.unit?.unit_number} — {b.unit?.building?.name}</TableCell>
+                                    <TableCell><Badge variant="secondary">{b.booking_type}</Badge></TableCell>
+                                    <TableCell><Badge variant={statusBadge(b.status)}>{b.status}</Badge></TableCell>
+                                    <TableCell className="text-right">{b.total_price ? `৳${Number(b.total_price).toLocaleString('en-US')}` : '—'}</TableCell>
+                                    <TableCell className="text-right">{b.down_payment ? `৳${Number(b.down_payment).toLocaleString('en-US')}` : '—'}</TableCell>
+                                    <TableCell>
+                                        <Button size="sm" variant="ghost" asChild>
+                                            <Link href={bookings.show(b.id).url}>View</Link>
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+
+            {/* ── Interactions ── */}
+            <Card className="mb-6">
+                <CardHeader>
+                    <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2"><PhoneCall className="h-4 w-4" />Interactions</CardTitle>
+                        <Button size="sm" variant="outline" asChild>
+                            <Link href={interactions.create().url + `?client_id=${client.id}`}>Log Interaction</Link>
+                        </Button>
+                    </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Date</TableHead><TableHead>Type</TableHead>
+                                <TableHead>Subject</TableHead><TableHead>Notes</TableHead>
+                                <TableHead>Recorded By</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {client.interactions.length === 0 ? (
+                                <TableRow><TableCell colSpan={5} className="py-6 text-center text-muted-foreground">No interactions yet.</TableCell></TableRow>
+                            ) : client.interactions.map((i) => (
+                                <TableRow key={i.id}>
+                                    <TableCell className="text-muted-foreground">{i.interaction_date}</TableCell>
+                                    <TableCell><Badge variant="secondary">{i.type}</Badge></TableCell>
+                                    <TableCell className="font-medium">{i.subject}</TableCell>
+                                    <TableCell className="max-w-xs truncate">{i.notes || '—'}</TableCell>
+                                    <TableCell>{i.recorded_by?.name || '—'}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+
+            {/* ── Meetings ── */}
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2"><CalendarDays className="h-4 w-4" />Meetings & Site Visits</CardTitle>
+                        <Button size="sm" variant="outline" asChild>
+                            <Link href={meetings.create().url + `?client_id=${client.id}`}>Schedule Meeting</Link>
+                        </Button>
+                    </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Title</TableHead><TableHead>Scheduled</TableHead>
+                                <TableHead>Location</TableHead><TableHead>Status</TableHead>
+                                <TableHead>Outcome</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {client.meetings.length === 0 ? (
+                                <TableRow><TableCell colSpan={5} className="py-6 text-center text-muted-foreground">No meetings yet.</TableCell></TableRow>
+                            ) : client.meetings.map((m) => (
+                                <TableRow key={m.id}>
+                                    <TableCell className="font-medium">{m.title}</TableCell>
+                                    <TableCell>{m.scheduled_at}</TableCell>
+                                    <TableCell>{m.location || '—'}</TableCell>
+                                    <TableCell><Badge variant={meetingBadge(m.status)}>{m.status}</Badge></TableCell>
+                                    <TableCell className="max-w-xs truncate">{m.outcome || '—'}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
         </>
     )
 }

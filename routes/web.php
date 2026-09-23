@@ -24,6 +24,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialPurchaseController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PaymentTermController;
+use App\Http\Controllers\PaymentScheduleController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectMilestoneController;
 use App\Http\Controllers\ProjectPhaseController;
@@ -99,9 +100,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // ---- CRM module ----
     Route::get('crm', [CrmController::class, 'dashboard'])->name('crm.dashboard');
+    Route::get('crm/reports', [CrmController::class, 'reports'])->name('crm.reports');
     Route::resource('leads', LeadController::class);
+    Route::post('leads/{lead}/convert', [LeadController::class, 'convert'])->name('leads.convert');
     Route::resource('interactions', InteractionController::class)->except(['show']);
     Route::resource('meetings', MeetingController::class)->except(['show']);
+    Route::resource('bookings.payment-schedules', PaymentScheduleController::class)
+        ->only(['store', 'update', 'destroy'])
+        ->shallow();
 
     Route::get('files/{path}', function (string $path) {
         $fullPath = storage_path('app/public/' . $path);

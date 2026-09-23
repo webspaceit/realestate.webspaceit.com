@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Client;
 use App\Models\Interaction;
 use App\Models\Lead;
 use App\Models\Meeting;
@@ -89,6 +91,97 @@ class CrmController extends Controller
             'upcomingFollowUps' => $upcomingFollowUps,
             'upcomingMeetings' => $upcomingMeetings,
             'recentInteractions' => $recentInteractions,
+        ]);
+    }
+
+    public function reports()
+    {
+        $stages = config('crm.stages');
+        $sources = config('crm.sources');
+
+        // ── Leads by stage ──────────────────────────────────────────────
+        $allLeads = Lead::all();
+
+        $byStage = collect($stages)->map(fn ($meta, $stage) => [
+            'stage'    => $stage,
+            'count'    => $allLeads->where('stage', $stage)->count(),
+            'value'    => (float) $allLeads->where('stage', $stage)->sum('value'),
+            'badge'    => $meta['badge'],
+        ])->values();
+
+        // ── Leads by source ─────────────────────────────────────────────
+        $bySource = collect($sources)->map(fn ($src) => [
+            'source' => $src,
+            'count'  => $allLeads->where('source', $src)->count(),
+        ])->filter(fn ($s) => $s['count'] > 0)->values();
+
+        // ── Monthly leads created (last 12 months) ───────────────────────
+        $monthlyLeads = Lead::query()
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
+            ->where('created_at', '>=', Carbon::now()->subMonths(11)->startOfMonth())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // ── Conversion stats ─────────────────────────────────────────────
+        $totalLeads    = $allLeads->count();
+        $convertedLeads = $allLeads->whereNotNull('converted_client_id')->count();
+        $awardedLeads  = $allLeads->where('stage', 'Awarded')->count();
+        $lostLeads     = $allLeads->where('stage', 'Lost')->count();
+        $conversionRate = $totalLeads > 0 ? round($convertedLeads / $totalLeads * 100, 1) : 0;
+
+        // ── Bookings summary ─────────────────────────────────────────────
+        $bookings = Booking::all();
+        $bookingsByStatus = [
+            'pending'   => $bookings->where('status', 'pending')->count(),
+            'confirmed' => $bookings->where('status', 'confirmed')->count(),
+            'cancelled' => $bookings->where('status', 'cancelled')->count(),
+        ];
+        $totalBookingValue = (float) $bookings->whereIn('status', ['pending', 'confirmed'])->sum('total_price');
+
+        // ── Monthly bookings (last 12 months) ────────────────────────────
+        $monthlyBookings = Booking::query()
+            ->selectRaw("DATE_FORMAT(booking_date, '%Y-%m') as month, COUNT(*) as count, SUM(total_price) as value")
+            ->where('booking_date', '>=', Carbon::now()->subMonths(11)->startOfMonth())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // ── Interactions by type ─────────────────────────────────────────
+        $interactionsByType = Interaction::query()
+            ->selectRaw('type, COUNT(*) as count')
+            ->groupBy('type')
+            ->get();
+
+        // ── Top clients by booking value ─────────────────────────────────
+        $topClients = Client::query()
+            ->withSum(['bookings as total_value' => fn ($q) => $q->whereIn('status', ['pending', 'confirmed'])], 'total_price')
+            ->having('total_value', '>', 0)
+            ->orderByDesc('total_value')
+            ->limit(10)
+            ->get(['id', 'contact_person', 'company_name'])
+            ->map(fn ($c) => [
+                'id'             => $c->id,
+                'name'           => $c->company_name ?: $c->contact_person,
+                'total_value'    => (float) $c->total_value,
+            ]);
+
+        return Inertia::render('crm/reports', [
+            'byStage'          => $byStage,
+            'bySource'         => $bySource,
+            'monthlyLeads'     => $monthlyLeads,
+            'monthlyBookings'  => $monthlyBookings,
+            'conversionStats'  => [
+                'total'          => $totalLeads,
+                'converted'      => $convertedLeads,
+                'awarded'        => $awardedLeads,
+                'lost'           => $lostLeads,
+                'conversion_rate'=> $conversionRate,
+            ],
+            'bookingsByStatus' => $bookingsByStatus,
+            'totalBookingValue'=> $totalBookingValue,
+            'interactionsByType'=> $interactionsByType,
+            'topClients'       => $topClients,
         ]);
     }
 }

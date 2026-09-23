@@ -30,4 +30,9 @@ class Booking extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function paymentSchedules(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PaymentSchedule::class)->orderBy('due_date');
+    }
 }

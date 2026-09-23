@@ -140,4 +140,28 @@ class LeadController extends Controller
         return redirect()->route('leads.index')
             ->with('success', 'Lead deleted successfully.');
     }
+
+    public function convert(Lead $lead)
+    {
+        if ($lead->isConverted()) {
+            return redirect()->route('flat-owners.show', $lead->converted_client_id)
+                ->with('info', 'This lead has already been converted.');
+        }
+
+        $client = \App\Models\Client::create([
+            'contact_person' => $lead->contact_person,
+            'company_name'   => $lead->company_name,
+            'email'          => $lead->email,
+            'phone_mobile'   => $lead->phone,
+        ]);
+
+        $lead->update([
+            'converted_client_id' => $client->id,
+            'converted_at'        => now(),
+            'stage'               => 'Awarded',
+        ]);
+
+        return redirect()->route('flat-owners.show', $client->id)
+            ->with('success', 'Lead converted to client successfully.');
+    }
 }

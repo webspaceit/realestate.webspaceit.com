@@ -69,9 +69,15 @@ class ClientController extends Controller
 
     public function show(Client $client)
     {
-        $client->load(['properties' => function ($query) {
-            $query->with('unit.building', 'project');
-        }, 'nominees']);
+        $client->load([
+            'properties' => function ($query) {
+                $query->with('unit.building', 'project');
+            },
+            'nominees',
+            'interactions' => fn ($q) => $q->with('recordedBy:id,name')->orderBy('interaction_date', 'desc'),
+            'meetings'     => fn ($q) => $q->with('organizer:id,name')->orderBy('scheduled_at', 'desc'),
+            'bookings'     => fn ($q) => $q->with('unit.building')->orderBy('booking_date', 'desc'),
+        ]);
 
         return Inertia::render('clients/show', [
             'client' => $client,
