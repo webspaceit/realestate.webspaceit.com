@@ -57,6 +57,21 @@ class DashboardController extends Controller
                 'due_date' => $t->end_date,
             ]);
 
+        // ── Chart data ────────────────────────────────────────────────────
+        $unitsByStatus = Unit::selectRaw('status, count(*) as count')
+            ->where('is_bulk', false)
+            ->groupBy('status')
+            ->get()
+            ->map(fn ($r) => ['status' => ucfirst($r->status), 'count' => (int) $r->count]);
+
+        $monthlyExpenses = Expense::selectRaw("DATE_FORMAT(expense_date, '%Y-%m') as month, SUM(amount) as total")
+            ->whereNotNull('expense_date')
+            ->where('expense_date', '>=', now()->subMonths(11)->startOfMonth())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->map(fn ($r) => ['month' => $r->month, 'total' => (float) $r->total]);
+
         return Inertia::render('dashboard', [
             'stats' => [
                 'total_buildings' => Building::count(),
@@ -65,14 +80,16 @@ class DashboardController extends Controller
                 'total_clients' => Client::count(),
                 'total_contractors' => Contractor::count(),
                 'projects_by_status' => [
-                    'planning' => $projectsByStatus->get('planning', 0),
-                    'in_progress' => $projectsByStatus->get('in_progress', 0),
-                    'completed' => $projectsByStatus->get('completed', 0),
-                    'on_hold' => $projectsByStatus->get('on_hold', 0),
+                    'planning'    => (int) $projectsByStatus->get('planning', 0),
+                    'in_progress' => (int) $projectsByStatus->get('in_progress', 0),
+                    'completed'   => (int) $projectsByStatus->get('completed', 0),
+                    'on_hold'     => (int) $projectsByStatus->get('on_hold', 0),
                 ],
                 'recent_expenses' => $recentExpenses,
-                'low_stock' => $lowStock,
-                'my_tasks' => $myTasks,
+                'low_stock'       => $lowStock,
+                'my_tasks'        => $myTasks,
+                'units_by_status' => $unitsByStatus,
+                'monthly_expenses'=> $monthlyExpenses,
             ],
         ]);
     }

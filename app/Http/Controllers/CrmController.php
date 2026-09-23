@@ -78,6 +78,21 @@ class CrmController extends Controller
                 'party' => $i->lead?->company_name ?: ($i->client?->company_name ?: $i->lead?->contact_person ?: $i->client?->contact_person),
             ]);
 
+        // ── Chart data ────────────────────────────────────────────────────
+        $monthlyLeads = Lead::query()
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
+            ->where('created_at', '>=', Carbon::now()->subMonths(11)->startOfMonth())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->map(fn ($r) => ['month' => $r->month, 'count' => (int) $r->count]);
+
+        $interactionsByType = Interaction::query()
+            ->selectRaw('type, COUNT(*) as count')
+            ->groupBy('type')
+            ->get()
+            ->map(fn ($r) => ['type' => $r->type, 'count' => (int) $r->count]);
+
         return Inertia::render('crm/dashboard', [
             'stats' => [
                 'total_leads' => $leads->count(),
@@ -91,6 +106,8 @@ class CrmController extends Controller
             'upcomingFollowUps' => $upcomingFollowUps,
             'upcomingMeetings' => $upcomingMeetings,
             'recentInteractions' => $recentInteractions,
+            'monthlyLeads' => $monthlyLeads,
+            'interactionsByType' => $interactionsByType,
         ]);
     }
 
