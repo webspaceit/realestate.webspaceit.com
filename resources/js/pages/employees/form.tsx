@@ -173,7 +173,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         </div>
                         <div className="space-y-2">
                             <Label>Marital Status</Label>
-                            <Select value={form.marital_status} onValueChange={(v) => set('marital_status', v)}>
+                            <Select value={form.marital_status || undefined} onValueChange={(v) => set('marital_status', v)}>
                                 <SelectTrigger className="w-full"><SelectValue placeholder="Select Marital Status..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="unmarried">Unmarried</SelectItem>
@@ -188,7 +188,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         </div>
                         <div className="space-y-2">
                             <Label>Blood Group</Label>
-                            <Select value={form.blood_group} onValueChange={(v) => set('blood_group', v)}>
+                            <Select value={form.blood_group || undefined} onValueChange={(v) => set('blood_group', v)}>
                                 <SelectTrigger className="w-full"><SelectValue placeholder="Select Blood Group..." /></SelectTrigger>
                                 <SelectContent>
                                     {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((bg) => (
@@ -199,7 +199,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         </div>
                         <div className="space-y-2">
                             <Label>Gender</Label>
-                            <Select value={form.gender} onValueChange={(v) => set('gender', v)}>
+                            <Select value={form.gender || undefined} onValueChange={(v) => set('gender', v)}>
                                 <SelectTrigger className="w-full"><SelectValue placeholder="Select Gender..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="male">Male</SelectItem>
@@ -214,7 +214,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         </div>
                         <div className="space-y-2">
                             <Label>Religion</Label>
-                            <Select value={form.religion} onValueChange={(v) => set('religion', v)}>
+                            <Select value={form.religion || undefined} onValueChange={(v) => set('religion', v)}>
                                 <SelectTrigger className="w-full"><SelectValue placeholder="Select Religion..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="islam">Islam</SelectItem>
@@ -232,7 +232,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                             <Label htmlFor="nationality">Nationality</Label>
                             <SearchableSelect
                                 label=""
-                                placeholder="Select nationality..."
+                                placeholder="Select Nationality..."
                                 options={countries.map((c) => ({ value: c, label: c }))}
                                 value={form.nationality}
                                 onChange={(v) => set('nationality', v)}
@@ -240,7 +240,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         </div>
                         <div className="space-y-2">
                             <Label>Employee Status</Label>
-                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                            <Select value={form.status || undefined} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger className="w-full"><SelectValue placeholder="Select Employee Status..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="active">Active</SelectItem>
@@ -288,7 +288,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                             <Label htmlFor="position_applied_for">Position Applied For</Label>
                             <SearchableSelect
                                 label=""
-                                placeholder="Select vacant role..."
+                                placeholder="Select Position Applied For..."
                                 options={designations.map((d) => ({ value: String(d.id), label: d.name }))}
                                 value={form.position_applied_for}
                                 onChange={(v) => set('position_applied_for', v)}
@@ -298,7 +298,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                             <Label>Department</Label>
                             <SearchableSelect
                                 label=""
-                                placeholder="Select department..."
+                                placeholder="Select Department..."
                                 options={departments.map((d) => ({ value: String(d.id), label: d.name }))}
                                 value={form.department_id}
                                 onChange={(v) => set('department_id', v)}
@@ -308,7 +308,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                             <Label>Designation Level</Label>
                             <SearchableSelect
                                 label=""
-                                placeholder="Select designation..."
+                                placeholder="Select Designation Level..."
                                 options={designations.map((d) => ({ value: String(d.id), label: d.name }))}
                                 value={form.designation_id}
                                 onChange={(v) => set('designation_id', v)}
@@ -316,7 +316,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         </div>
                         <div className="space-y-2">
                             <Label>Employment Type</Label>
-                            <Select value={form.employment_type} onValueChange={(v) => set('employment_type', v)}>
+                            <Select value={form.employment_type || undefined} onValueChange={(v) => set('employment_type', v)}>
                                 <SelectTrigger className="w-full"><SelectValue placeholder="Select Employment Type..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="full_time">Full-time</SelectItem>
