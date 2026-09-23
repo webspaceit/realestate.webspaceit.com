@@ -114,7 +114,7 @@ export default function Index() {
                         </div>
                         <div className="w-52 space-y-1">
                             <Label>Stage</Label>
-                            <Select value={stage} onValueChange={(v) => { setStage(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
+                            <Select value={stage || undefined} onValueChange={(v) => { setStage(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
                                 <SelectTrigger><SelectValue placeholder="Select Stage..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All stages</SelectItem>
@@ -126,7 +126,7 @@ export default function Index() {
                         </div>
                         <div className="w-52 space-y-1">
                             <Label>Source</Label>
-                            <Select value={source} onValueChange={(v) => { setSource(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
+                            <Select value={source || undefined} onValueChange={(v) => { setSource(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
                                 <SelectTrigger><SelectValue placeholder="Select Source..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All sources</SelectItem>
@@ -138,7 +138,7 @@ export default function Index() {
                         </div>
                         <div className="w-52 space-y-1">
                             <Label>Assigned To</Label>
-                            <Select value={assignedToId} onValueChange={(v) => { setAssignedToId(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
+                            <Select value={assignedToId || undefined} onValueChange={(v) => { setAssignedToId(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
                                 <SelectTrigger><SelectValue placeholder="Select User..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All users</SelectItem>

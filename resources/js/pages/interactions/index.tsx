@@ -87,7 +87,7 @@ export default function Index() {
                         </div>
                         <div className="w-44 space-y-1">
                             <Label>Type</Label>
-                            <Select value={type} onValueChange={(v) => { setType(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
+                            <Select value={type || undefined} onValueChange={(v) => { setType(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
                                 <SelectTrigger><SelectValue placeholder="Select Type..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All types</SelectItem>

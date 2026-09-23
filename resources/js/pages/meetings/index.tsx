@@ -94,7 +94,7 @@ export default function Index() {
                         </div>
                         <div className="w-44 space-y-1">
                             <Label>Status</Label>
-                            <Select value={status} onValueChange={(v) => { setStatus(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
+                            <Select value={status || undefined} onValueChange={(v) => { setStatus(v === 'all' ? '' : v); setTimeout(handleFilter); }}>
                                 <SelectTrigger><SelectValue placeholder="Select Status..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All statuses</SelectItem>
