@@ -151,7 +151,7 @@ export default function Show() {
                             <Link href={`/flat-owners/${lead.converted_client.id}`} className="font-semibold underline hover:no-underline">
                                 {lead.converted_client.company_name || lead.converted_client.contact_person}
                             </Link>
-                            {lead.converted_at && <> on {lead.converted_at.slice(0, 10)}</>}
+                            {lead.converted_at && <> on {lead.converted_at.slice(0, 10).split('-').reverse().join('-')}</>}
                         </span>
                     </div>
                 )}

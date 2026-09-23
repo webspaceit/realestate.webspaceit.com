@@ -55,7 +55,10 @@ interface EmployeeDetail {
 
 function fmtDate(value: string | null): string {
     if (!value) return '-';
-    return value.slice(0, 10);
+    const s = String(value).slice(0, 10);
+    const [y, m, d] = s.split('-');
+    if (!y || !m || !d) return s;
+    return `${d}-${m}-${y}`;
 }
 
 function humanize(value: string | null | undefined): string {

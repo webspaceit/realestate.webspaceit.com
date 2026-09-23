@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { fmtDate, fmtDateInput } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import bookings from '@/routes/bookings';
 import { ArrowLeft, CalendarCheck, User, Home, DollarSign, Plus, Pencil, Trash2 } from 'lucide-react';
@@ -144,7 +145,7 @@ export default function Show() {
                     <CardHeader><CardTitle className="flex items-center gap-2"><DollarSign className="size-4" />Booking Details</CardTitle></CardHeader>
                     <CardContent>
                         <dl className="grid grid-cols-3 gap-4 text-sm">
-                            <div><dt className="text-muted-foreground">Booking Date</dt><dd className="font-medium">{booking.booking_date ? booking.booking_date.slice(0, 10) : '-'}</dd></div>
+                            <div><dt className="text-muted-foreground">Booking Date</dt><dd className="font-medium">{fmtDate(booking.booking_date)}</dd></div>
                             <div><dt className="text-muted-foreground">Down Payment</dt><dd className="font-medium">{booking.down_payment ? `৳${Number(booking.down_payment).toLocaleString('en-US')}` : '-'}</dd></div>
                             <div><dt className="text-muted-foreground">Total Price</dt><dd className="font-medium">{booking.total_price ? `৳${Number(booking.total_price).toLocaleString('en-US')}` : '-'}</dd></div>
                             {booking.notes && <div className="col-span-3"><dt className="text-muted-foreground">Notes</dt><dd className="mt-1 whitespace-pre-wrap">{booking.notes}</dd></div>}
@@ -232,10 +233,10 @@ export default function Show() {
                             ) : booking.payment_schedules.map((p) => (
                                 <TableRow key={p.id}>
                                     <TableCell>{p.label || '—'}</TableCell>
-                                    <TableCell>{p.due_date}</TableCell>
+                                    <TableCell>{fmtDate(p.due_date)}</TableCell>
                                     <TableCell className="text-right font-medium">৳{Number(p.amount).toLocaleString('en-US')}</TableCell>
                                     <TableCell className="text-right text-green-600">৳{Number(p.paid_amount).toLocaleString('en-US')}</TableCell>
-                                    <TableCell>{p.paid_date || '—'}</TableCell>
+                                    <TableCell>{fmtDate(p.paid_date)}</TableCell>
                                     <TableCell><Badge variant={psVariant(p.status)}>{p.status}</Badge></TableCell>
                                     <TableCell>
                                         <div className="flex gap-1">

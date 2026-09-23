@@ -49,7 +49,11 @@ interface PageProps {
 
 function fmtValue(value: string | null | undefined, type?: string): string {
     if (value === null || value === undefined || value === '') return '-';
-    if (type === 'date') return String(value).slice(0, 10);
+    if (type === 'date') {
+        const s = String(value).slice(0, 10);
+        const [y, m, d] = s.split('-');
+        return (!y || !m || !d) ? s : `${d}-${m}-${y}`;
+    }
     if (type === 'month') {
         const [y, m] = String(value).split('-');
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

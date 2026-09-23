@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { fmtDate } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import bookings from '@/routes/bookings';
 import { CalendarCheck, Eye, Pencil, Plus, Search, Trash2 } from 'lucide-react';
@@ -180,7 +181,7 @@ export default function Index({
                                             {booking.booking_type}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>{booking.booking_date ? booking.booking_date.slice(0, 10) : '-'}</TableCell>
+                                    <TableCell>{fmtDate(booking.booking_date)}</TableCell>
                                     <TableCell>{booking.down_payment ? `৳${Number(booking.down_payment).toLocaleString('en-US')}` : '-'}</TableCell>
                                     <TableCell>
                                         <Badge variant={statusVariant(booking.status)}>
