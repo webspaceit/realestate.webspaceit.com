@@ -1,62 +1,24 @@
 import { Head, Link, usePage } from '@inertiajs/react'
-import {
-    AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
-    XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
-} from 'recharts'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { BarChartSvg, AreaChartSvg, DonutChartSvg } from '@/components/ui/mini-charts'
 import { Handshake, Target, TrendingUp, PhoneCall, CalendarDays, type LucideIcon } from 'lucide-react'
 import { dashboard } from '@/routes'
 import leads from '@/routes/leads'
 import interactions from '@/routes/interactions'
 import meetings from '@/routes/meetings'
 
-interface Stage {
-    stage: string
-    badge: string
-    probability: number
-    count: number
-    value: number
-    weighted: number
-}
-
-interface FollowUp {
-    id: number
-    contact_person: string
-    company_name: string | null
-    stage: string
-    follow_up_date: string
-}
-
-interface UpcomingMeeting {
-    id: number
-    title: string
-    location: string | null
-    status: string
-    scheduled_at: string
-    lead: string | null
-    client: string | null
-}
-
-interface RecentInteraction {
-    id: number
-    type: string
-    subject: string
-    interaction_date: string
-    party: string | null
-}
-
+interface Stage { stage: string; badge: string; probability: number; count: number; value: number; weighted: number }
+interface FollowUp { id: number; contact_person: string; company_name: string | null; stage: string; follow_up_date: string }
+interface UpcomingMeeting { id: number; title: string; location: string | null; status: string; scheduled_at: string; lead: string | null; client: string | null }
+interface RecentInteraction { id: number; type: string; subject: string; interaction_date: string; party: string | null }
 interface MonthlyLead { month: string; count: number }
 interface InteractionType { type: string; count: number }
 
 interface Stats {
-    total_leads: number
-    open_leads: number
-    pipeline_value: number
-    weighted_value: number
-    awarded_value: number
-    meetings_upcoming: number
+    total_leads: number; open_leads: number; pipeline_value: number
+    weighted_value: number; awarded_value: number; meetings_upcoming: number
 }
 
 interface PageProps {
@@ -69,42 +31,25 @@ interface PageProps {
     interactionsByType: InteractionType[]
 }
 
-// ── Colours ───────────────────────────────────────────────────────────────────
-const STAGE_COLORS = ['#6366f1', '#14b8a6', '#f59e0b', '#8b5cf6', '#10b981', '#ef4444', '#f97316']
 const TYPE_COLORS = ['#6366f1', '#14b8a6', '#f59e0b', '#ef4444', '#10b981', '#8b5cf6']
-const LEAD_COLOR = '#6366f1'
+const STAGE_COLORS = ['#6366f1', '#14b8a6', '#f59e0b', '#8b5cf6', '#10b981', '#ef4444', '#f97316']
 
 function fmt(n: number) {
     return `৳${Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 0 })}`
-}
-
-function ChartTooltip({ active, payload, label, prefix = '' }: any) {
-    if (!active || !payload?.length) return null
-    return (
-        <div className="rounded-lg border bg-background px-3 py-2 text-sm shadow-lg">
-            <p className="mb-1 font-medium text-muted-foreground">{label}</p>
-            {payload.map((p: any) => (
-                <p key={p.name} style={{ color: p.color }} className="font-semibold">
-                    {p.name}: {prefix}{Number(p.value).toLocaleString('en-US')}
-                </p>
-            ))}
-        </div>
-    )
 }
 
 function StatCard({ label, value, icon: Icon, gradient, shadow }: {
     label: string; value: string | number; icon: LucideIcon; gradient: string; shadow: string
 }) {
     return (
-        <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} p-4 text-white shadow-xl ${shadow} transition-all hover:scale-[1.02] sm:p-6`}>
-            <div className="absolute top-0 right-0 h-24 w-24 -translate-y-8 translate-x-8 rounded-full bg-white/10" />
-            <div className="absolute right-0 bottom-0 h-16 w-16 translate-x-5 translate-y-4 rounded-full bg-white/5" />
+        <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} p-4 text-white shadow-xl ${shadow} transition-all hover:scale-[1.02] sm:p-5`}>
+            <div className="absolute top-0 right-0 h-20 w-20 -translate-y-6 translate-x-6 rounded-full bg-white/10" />
             <div className="relative">
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
-                    <Icon className="h-5 w-5" />
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-white/20">
+                    <Icon className="h-4 w-4" />
                 </div>
-                <p className="text-xs text-white/80 sm:text-sm">{label}</p>
-                <p className="mt-1 text-2xl font-bold sm:text-3xl">{value}</p>
+                <p className="text-xs text-white/80">{label}</p>
+                <p className="mt-0.5 text-xl font-bold sm:text-2xl">{value}</p>
             </div>
         </div>
     )
@@ -123,10 +68,17 @@ export default function CrmDashboard() {
         monthlyLeads, interactionsByType,
     } = usePage<PageProps>().props
 
-    // Pipeline bar data — only stages with leads
-    const pipelineChartData = byStage
+    const pipelineBars = byStage
         .filter(s => s.count > 0)
-        .map(s => ({ stage: s.stage, Value: s.value, Weighted: s.weighted }))
+        .map(s => ({ label: s.stage, value: s.value, value2: s.weighted }))
+
+    const leadArea = monthlyLeads.map(m => ({ label: m.month, value: m.count }))
+
+    const interactionPie = interactionsByType.map((t, i) => ({
+        label: t.type,
+        value: t.count,
+        color: TYPE_COLORS[i % TYPE_COLORS.length],
+    }))
 
     return (
         <>
@@ -147,117 +99,56 @@ export default function CrmDashboard() {
                 </div>
             </div>
 
-            {/* ── KPI Cards ── */}
+            {/* KPI Cards */}
             <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
                 <StatCard label="Total Leads" value={stats.total_leads} icon={Handshake} gradient="from-emerald-500 to-teal-600" shadow="shadow-emerald-500/20" />
                 <StatCard label="Open Leads" value={stats.open_leads} icon={Target} gradient="from-blue-500 to-indigo-600" shadow="shadow-blue-500/20" />
                 <StatCard label="Pipeline Value" value={fmt(stats.pipeline_value)} icon={TrendingUp} gradient="from-orange-500 to-amber-600" shadow="shadow-orange-500/20" />
-                <StatCard label="Weighted Pipeline" value={fmt(stats.weighted_value)} icon={TrendingUp} gradient="from-purple-500 to-fuchsia-600" shadow="shadow-purple-500/20" />
-                <StatCard label="Awarded Value" value={fmt(stats.awarded_value)} icon={TrendingUp} gradient="from-green-500 to-lime-600" shadow="shadow-green-500/20" />
-                <StatCard label="Upcoming Meetings" value={stats.meetings_upcoming} icon={CalendarDays} gradient="from-rose-500 to-pink-600" shadow="shadow-rose-500/20" />
+                <StatCard label="Weighted" value={fmt(stats.weighted_value)} icon={TrendingUp} gradient="from-purple-500 to-fuchsia-600" shadow="shadow-purple-500/20" />
+                <StatCard label="Awarded" value={fmt(stats.awarded_value)} icon={TrendingUp} gradient="from-green-500 to-lime-600" shadow="shadow-green-500/20" />
+                <StatCard label="Meetings" value={stats.meetings_upcoming} icon={CalendarDays} gradient="from-rose-500 to-pink-600" shadow="shadow-rose-500/20" />
             </div>
 
-            {/* ── Charts row ── */}
+            {/* Charts row */}
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-
-                {/* Pipeline Bar Chart */}
                 <Card className="lg:col-span-2">
                     <CardHeader>
                         <CardTitle>Pipeline by Stage</CardTitle>
-                        <CardDescription>Deal value vs weighted value per stage (৳)</CardDescription>
+                        <CardDescription>Value vs Weighted Value (৳)</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {pipelineChartData.length === 0 ? (
-                            <p className="py-12 text-center text-sm text-muted-foreground">No active pipeline data yet.</p>
-                        ) : (
-                            <ResponsiveContainer width="100%" height={240}>
-                                <BarChart data={pipelineChartData} barGap={4}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                                    <XAxis dataKey="stage" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
-                                    <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false}
-                                        tickFormatter={v => `৳${(v / 1000).toFixed(0)}k`} />
-                                    <Tooltip content={<ChartTooltip prefix="৳" />} />
-                                    <Legend iconType="circle" iconSize={8} />
-                                    <Bar dataKey="Value" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                                    <Bar dataKey="Weighted" fill="#14b8a6" radius={[4, 4, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        )}
+                        <BarChartSvg data={pipelineBars} height={220} prefix="৳" color="#6366f1" color2="#14b8a6" label2="Weighted" />
                     </CardContent>
                 </Card>
 
-                {/* Interactions by Type — Donut */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Interactions by Type</CardTitle>
                         <CardDescription>All-time breakdown</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {interactionsByType.length === 0 ? (
-                            <p className="py-12 text-center text-sm text-muted-foreground">No interactions yet.</p>
-                        ) : (
-                            <ResponsiveContainer width="100%" height={240}>
-                                <PieChart>
-                                    <Pie
-                                        data={interactionsByType}
-                                        dataKey="count"
-                                        nameKey="type"
-                                        cx="50%" cy="50%"
-                                        innerRadius={55} outerRadius={85}
-                                        paddingAngle={3}
-                                        label={({ type, count }) => `${type}: ${count}`}
-                                        labelLine={false}
-                                    >
-                                        {interactionsByType.map((_, i) => (
-                                            <Cell key={i} fill={TYPE_COLORS[i % TYPE_COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip content={<ChartTooltip />} />
-                                    <Legend iconType="circle" iconSize={8} />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        )}
+                        <DonutChartSvg data={interactionPie} size={160} />
                     </CardContent>
                 </Card>
             </div>
 
-            {/* Monthly Leads Area Chart */}
+            {/* Monthly Leads */}
             <Card className="mb-6">
                 <CardHeader>
-                    <CardTitle>Monthly Leads (Last 12 Months)</CardTitle>
+                    <CardTitle>Monthly Leads — Last 12 Months</CardTitle>
                     <CardDescription>New leads created per month</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {monthlyLeads.length === 0 ? (
-                        <p className="py-8 text-center text-sm text-muted-foreground">No lead data yet.</p>
-                    ) : (
-                        <ResponsiveContainer width="100%" height={200}>
-                            <AreaChart data={monthlyLeads}>
-                                <defs>
-                                    <linearGradient id="leadGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor={LEAD_COLOR} stopOpacity={0.25} />
-                                        <stop offset="95%" stopColor={LEAD_COLOR} stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                                <XAxis dataKey="month" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
-                                <Tooltip content={<ChartTooltip />} />
-                                <Area type="monotone" dataKey="count" name="Leads"
-                                    stroke={LEAD_COLOR} strokeWidth={2}
-                                    fill="url(#leadGrad)" dot={{ r: 3, fill: LEAD_COLOR }} />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    )}
+                    <AreaChartSvg data={leadArea} height={180} color="#6366f1" />
                 </CardContent>
             </Card>
 
-            {/* ── Pipeline table + side panels ── */}
+            {/* Pipeline table + side panels */}
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <Card className="lg:col-span-2">
                     <CardHeader>
                         <CardTitle>Pipeline by Stage</CardTitle>
-                        <CardDescription>Open deals — weighted value = value × probability</CardDescription>
+                        <CardDescription>Weighted value = value × probability</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0">
                         <Table>
@@ -270,7 +161,7 @@ export default function CrmDashboard() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {byStage.map((s) => (
+                                {byStage.map(s => (
                                     <TableRow key={s.stage}>
                                         <TableCell>
                                             <Badge variant={stageBadgeVariant(s.stage)}>{s.stage}</Badge>
@@ -292,7 +183,7 @@ export default function CrmDashboard() {
                         <CardContent className="space-y-2">
                             {upcomingFollowUps.length === 0 ? (
                                 <p className="py-4 text-center text-sm text-muted-foreground">No upcoming follow-ups.</p>
-                            ) : upcomingFollowUps.map((f) => (
+                            ) : upcomingFollowUps.map(f => (
                                 <Link key={f.id} href={leads.show(f.id).url} className="block rounded-lg border p-3 hover:bg-accent transition-colors">
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm font-medium">{f.contact_person}</span>
@@ -310,7 +201,7 @@ export default function CrmDashboard() {
                         <CardContent className="space-y-2">
                             {upcomingMeetings.length === 0 ? (
                                 <p className="py-4 text-center text-sm text-muted-foreground">No upcoming meetings.</p>
-                            ) : upcomingMeetings.map((m) => (
+                            ) : upcomingMeetings.map(m => (
                                 <Link key={m.id} href={meetings.edit(m.id).url} className="block rounded-lg border p-3 hover:bg-accent transition-colors">
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm font-medium">{m.title}</span>
@@ -324,23 +215,21 @@ export default function CrmDashboard() {
                 </div>
             </div>
 
-            {/* ── Recent Interactions ── */}
+            {/* Recent Interactions */}
             <Card>
                 <CardHeader><CardTitle>Recent Interactions</CardTitle></CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Type</TableHead>
-                                <TableHead>Subject</TableHead>
-                                <TableHead>Party</TableHead>
-                                <TableHead>Date</TableHead>
+                                <TableHead>Type</TableHead><TableHead>Subject</TableHead>
+                                <TableHead>Party</TableHead><TableHead>Date</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {recentInteractions.length === 0 ? (
                                 <TableRow><TableCell colSpan={4} className="py-8 text-center text-muted-foreground">No interactions yet.</TableCell></TableRow>
-                            ) : recentInteractions.map((i) => (
+                            ) : recentInteractions.map(i => (
                                 <TableRow key={i.id}>
                                     <TableCell><Badge variant="secondary">{i.type}</Badge></TableCell>
                                     <TableCell className="font-medium">{i.subject}</TableCell>
