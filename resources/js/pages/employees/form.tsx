@@ -174,7 +174,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         <div className="space-y-2">
                             <Label>Marital Status</Label>
                             <Select value={form.marital_status} onValueChange={(v) => set('marital_status', v)}>
-                                <SelectTrigger className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
+                                <SelectTrigger className="w-full"><SelectValue placeholder="Select Marital Status..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="unmarried">Unmarried</SelectItem>
                                     <SelectItem value="married">Married</SelectItem>
@@ -189,7 +189,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         <div className="space-y-2">
                             <Label>Blood Group</Label>
                             <Select value={form.blood_group} onValueChange={(v) => set('blood_group', v)}>
-                                <SelectTrigger className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
+                                <SelectTrigger className="w-full"><SelectValue placeholder="Select Blood Group..." /></SelectTrigger>
                                 <SelectContent>
                                     {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((bg) => (
                                         <SelectItem key={bg} value={bg}>{bg} ({bg.includes('+') ? 'Positive' : 'Negative'})</SelectItem>
@@ -200,7 +200,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         <div className="space-y-2">
                             <Label>Gender</Label>
                             <Select value={form.gender} onValueChange={(v) => set('gender', v)}>
-                                <SelectTrigger className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
+                                <SelectTrigger className="w-full"><SelectValue placeholder="Select Gender..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="male">Male</SelectItem>
                                     <SelectItem value="female">Female</SelectItem>
@@ -215,7 +215,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         <div className="space-y-2">
                             <Label>Religion</Label>
                             <Select value={form.religion} onValueChange={(v) => set('religion', v)}>
-                                <SelectTrigger className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
+                                <SelectTrigger className="w-full"><SelectValue placeholder="Select Religion..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="islam">Islam</SelectItem>
                                     <SelectItem value="hinduism">Hinduism</SelectItem>
@@ -241,7 +241,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         <div className="space-y-2">
                             <Label>Employee Status</Label>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
+                                <SelectTrigger className="w-full"><SelectValue placeholder="Select Employee Status..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="active">Active</SelectItem>
                                     <SelectItem value="inactive">Inactive</SelectItem>
@@ -317,7 +317,7 @@ export default function EmployeeForm({ existing, departments, designations, coun
                         <div className="space-y-2">
                             <Label>Employment Type</Label>
                             <Select value={form.employment_type} onValueChange={(v) => set('employment_type', v)}>
-                                <SelectTrigger className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
+                                <SelectTrigger className="w-full"><SelectValue placeholder="Select Employment Type..." /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="full_time">Full-time</SelectItem>
                                     <SelectItem value="part_time">Part-time</SelectItem>
