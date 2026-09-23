@@ -18,14 +18,13 @@ return new class extends Migration
             $table->string('stage', 50)->default('Inquiry');
             $table->unsignedSmallInteger('probability')->default(10);
             $table->decimal('value', 14, 2)->default(0);
-            $table->foreignId('assigned_to_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->unsignedBigInteger('assigned_to_id')->nullable()->index();
             $table->date('follow_up_date')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
 
             $table->index(['stage']);
             $table->index(['follow_up_date']);
-            $table->index(['assigned_to_id']);
         });
     }
 

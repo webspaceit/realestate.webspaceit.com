@@ -10,21 +10,19 @@ return new class extends Migration
     {
         Schema::create('meetings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lead_id')->nullable()->constrained('leads')->nullOnDelete();
-            $table->foreignId('client_id')->nullable()->constrained('clients')->nullOnDelete();
+            $table->unsignedBigInteger('lead_id')->nullable()->index();
+            $table->unsignedBigInteger('client_id')->nullable()->index();
             $table->string('title');
             $table->string('location')->nullable();
             $table->dateTime('scheduled_at');
             $table->string('status', 50)->default('Scheduled');
             $table->text('notes')->nullable();
             $table->text('outcome')->nullable();
-            $table->foreignId('organizer_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->unsignedBigInteger('organizer_id')->nullable()->index();
             $table->timestamps();
 
             $table->index(['status']);
             $table->index(['scheduled_at']);
-            $table->index(['lead_id']);
-            $table->index(['client_id']);
         });
     }
 
