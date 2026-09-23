@@ -112,7 +112,7 @@ export default function LeadForm({ existing, users, stages, sources, defaultStag
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="source">Source</Label>
-                        <Select value={form.source} onValueChange={(v) => setForm({ ...form, source: v })}>
+                        <Select value={form.source || undefined} onValueChange={(v) => setForm({ ...form, source: v })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Source..." /></SelectTrigger>
                             <SelectContent>
                                 {sources.map((s) => (
@@ -123,7 +123,7 @@ export default function LeadForm({ existing, users, stages, sources, defaultStag
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="assigned_to_id">Assigned To</Label>
-                        <Select value={form.assigned_to_id} onValueChange={(v) => setForm({ ...form, assigned_to_id: v })}>
+                        <Select value={form.assigned_to_id || undefined} onValueChange={(v) => setForm({ ...form, assigned_to_id: v })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select User..." /></SelectTrigger>
                             <SelectContent>
                                 {users.map((u) => (
@@ -151,7 +151,7 @@ export default function LeadForm({ existing, users, stages, sources, defaultStag
                 <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                         <Label htmlFor="stage">Stage <span className="text-destructive">*</span></Label>
-                        <Select value={form.stage} onValueChange={handleStageChange}>
+                        <Select value={form.stage || undefined} onValueChange={handleStageChange}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Stage..." /></SelectTrigger>
                             <SelectContent>
                                 {stages.map((s) => (

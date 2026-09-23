@@ -84,7 +84,7 @@ export default function InteractionForm({ existing, leads, clients, users, types
                 <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                         <Label htmlFor="lead_id">Related Lead</Label>
-                        <Select value={form.lead_id} onValueChange={(v) => setForm({ ...form, lead_id: v, client_id: '' })}>
+                        <Select value={form.lead_id || undefined} onValueChange={(v) => setForm({ ...form, lead_id: v, client_id: '' })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Lead..." /></SelectTrigger>
                             <SelectContent>
                                 {leads.map((l) => (
@@ -95,7 +95,7 @@ export default function InteractionForm({ existing, leads, clients, users, types
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="client_id">Related Client</Label>
-                        <Select value={form.client_id} onValueChange={(v) => setForm({ ...form, client_id: v, lead_id: '' })}>
+                        <Select value={form.client_id || undefined} onValueChange={(v) => setForm({ ...form, client_id: v, lead_id: '' })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Client..." /></SelectTrigger>
                             <SelectContent>
                                 {clients.map((c) => (
@@ -106,7 +106,7 @@ export default function InteractionForm({ existing, leads, clients, users, types
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="type">Type <span className="text-destructive">*</span></Label>
-                        <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v })}>
+                        <Select value={form.type || undefined} onValueChange={(v) => setForm({ ...form, type: v })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Type..." /></SelectTrigger>
                             <SelectContent>
                                 {types.map((t) => (
@@ -125,7 +125,7 @@ export default function InteractionForm({ existing, leads, clients, users, types
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="recorded_by_id">Recorded By</Label>
-                        <Select value={form.recorded_by_id} onValueChange={(v) => setForm({ ...form, recorded_by_id: v })}>
+                        <Select value={form.recorded_by_id || undefined} onValueChange={(v) => setForm({ ...form, recorded_by_id: v })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select User..." /></SelectTrigger>
                             <SelectContent>
                                 {users.map((u) => (

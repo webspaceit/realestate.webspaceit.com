@@ -84,7 +84,7 @@ export default function Create() {
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-1">
                             <Label htmlFor="client_id">Client</Label>
-                            <Select value={clientId} onValueChange={setClientId} required>
+                            <Select value={clientId || undefined} onValueChange={setClientId} required>
                                 <SelectTrigger id="client_id">
                                     <SelectValue placeholder="Select Client..." />
                                 </SelectTrigger>
@@ -100,7 +100,7 @@ export default function Create() {
 
                         <div className="space-y-1">
                             <Label htmlFor="unit_id">Unit</Label>
-                            <Select value={unitId} onValueChange={setUnitId} required>
+                            <Select value={unitId || undefined} onValueChange={setUnitId} required>
                                 <SelectTrigger id="unit_id">
                                     <SelectValue placeholder="Select Unit..." />
                                 </SelectTrigger>

@@ -162,7 +162,7 @@ export default function Create() {
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="user_id">User (optional)</Label>
-                                <Select value={userId} onValueChange={setUserId}>
+                                <Select value={userId || undefined} onValueChange={setUserId}>
                                     <SelectTrigger id="user_id">
                                         <SelectValue placeholder="Select User..." />
                                     </SelectTrigger>
@@ -523,7 +523,7 @@ export default function Create() {
                                         </div>
                                     </div>
                                     <Button type="button" variant="ghost" size="icon" onClick={() => setNominees(nominees.filter((_, j) => j !== i))}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-destructive"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-destructive"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
                                     </Button>
                                 </div>
                             ))}

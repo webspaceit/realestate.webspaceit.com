@@ -106,7 +106,7 @@ export default function MeetingForm({ existing, leads, clients, users, statuses,
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="status">Status</Label>
-                        <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
+                        <Select value={form.status || undefined} onValueChange={(v) => setForm({ ...form, status: v })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Status..." /></SelectTrigger>
                             <SelectContent>
                                 {statuses.map((s) => (
@@ -117,7 +117,7 @@ export default function MeetingForm({ existing, leads, clients, users, statuses,
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="lead_id">Related Lead</Label>
-                        <Select value={form.lead_id} onValueChange={(v) => setForm({ ...form, lead_id: v, client_id: '' })}>
+                        <Select value={form.lead_id || undefined} onValueChange={(v) => setForm({ ...form, lead_id: v, client_id: '' })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Lead..." /></SelectTrigger>
                             <SelectContent>
                                 {leads.map((l) => (
@@ -128,7 +128,7 @@ export default function MeetingForm({ existing, leads, clients, users, statuses,
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="client_id">Related Client</Label>
-                        <Select value={form.client_id} onValueChange={(v) => setForm({ ...form, client_id: v, lead_id: '' })}>
+                        <Select value={form.client_id || undefined} onValueChange={(v) => setForm({ ...form, client_id: v, lead_id: '' })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select Client..." /></SelectTrigger>
                             <SelectContent>
                                 {clients.map((c) => (
@@ -139,7 +139,7 @@ export default function MeetingForm({ existing, leads, clients, users, statuses,
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="organizer_id">Organizer</Label>
-                        <Select value={form.organizer_id} onValueChange={(v) => setForm({ ...form, organizer_id: v })}>
+                        <Select value={form.organizer_id || undefined} onValueChange={(v) => setForm({ ...form, organizer_id: v })}>
                             <SelectTrigger className="w-full"><SelectValue placeholder="Select User..." /></SelectTrigger>
                             <SelectContent>
                                 {users.map((u) => (

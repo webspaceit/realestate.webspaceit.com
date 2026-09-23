@@ -126,7 +126,7 @@ export default function Edit({ booking, clients, units }: { booking: Booking; cl
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <Label htmlFor="booking_type">Booking Type</Label>
-                                    <Select value={bookingType} onValueChange={setBookingType}>
+                                    <Select value={bookingType || undefined} onValueChange={setBookingType}>
                                         <SelectTrigger id="booking_type">
                                             <SelectValue placeholder="Select Booking Type..." />
                                         </SelectTrigger>
@@ -146,7 +146,7 @@ export default function Edit({ booking, clients, units }: { booking: Booking; cl
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <Label htmlFor="status">Status</Label>
-                                    <Select value={status} onValueChange={setStatus}>
+                                    <Select value={status || undefined} onValueChange={setStatus}>
                                         <SelectTrigger id="status">
                                             <SelectValue placeholder="Select Status..." />
                                         </SelectTrigger>
