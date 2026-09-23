@@ -227,7 +227,7 @@ export default function Edit() {
                                     />
                                     <SearchableSelect
                                         label="District"
-                                        placeholder={form.division_id ? 'Select district' : 'Select division first'}
+                                        placeholder={form.division_id ? 'Select District...' : 'Select Division First...'}
                                         disabled={!form.division_id}
                                         options={filteredDistricts.map(d => ({ value: String(d.id), label: d.name }))}
                                         value={form.district_id}
@@ -235,7 +235,7 @@ export default function Edit() {
                                     />
                                     <SearchableSelect
                                         label="Thana"
-                                        placeholder={form.district_id ? 'Select thana' : 'Select district first'}
+                                        placeholder={form.district_id ? 'Select Thana...' : 'Select District First...'}
                                         disabled={!form.district_id}
                                         options={filteredThanas.map(t => ({ value: String(t.id), label: t.name }))}
                                         value={form.thana_id}

@@ -90,7 +90,7 @@ export default function Create({ clients, units }: { clients: Client[]; units: U
                         <CardContent className="space-y-4">
                             <SearchableSelect
                                 label="Client"
-                                placeholder="Search and select a client..."
+                                placeholder="Select Client..."
                                 options={filteredClients.map(c => ({
                                     value: String(c.id),
                                     label: `${c.contact_person || c.company_name} (${c.phone_mobile || 'N/A'})`,
@@ -101,7 +101,7 @@ export default function Create({ clients, units }: { clients: Client[]; units: U
 
                             <SearchableSelect
                                 label="Available Unit"
-                                placeholder="Select an available unit..."
+                                placeholder="Select Available Unit..."
                                 options={units.map(u => ({
                                     value: String(u.id),
                                     label: `${u.unit_number} - ${u.building?.name || 'N/A'}${u.price ? ` (৳${Number(u.price).toLocaleString('en-US')})` : ''}`,

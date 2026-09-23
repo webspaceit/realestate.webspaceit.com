@@ -58,7 +58,7 @@ function FieldControl({ field, value, employeeOptions, departmentOptions, design
                 <div className="space-y-2">
                     <Label>{field.label}{requiredMark}</Label>
                     <Select value={value} onValueChange={(v) => onChange(v === ' ' ? '' : v)}>
-                        <SelectTrigger className="w-full"><SelectValue placeholder={`Select ${field.label.toLowerCase()}...`} /></SelectTrigger>
+                        <SelectTrigger className="w-full"><SelectValue placeholder={`Select ${field.label}...`} /></SelectTrigger>
                         <SelectContent>
                             <SelectItem value=" ">—</SelectItem>
                             {(field.options ?? []).map((opt) => (
@@ -77,7 +77,7 @@ function FieldControl({ field, value, employeeOptions, departmentOptions, design
                     <Label>{field.label}{requiredMark}</Label>
                     <SearchableSelect
                         label=""
-                        placeholder={`Select ${field.label.toLowerCase()}...`}
+                        placeholder={`Select ${field.label}...`}
                         options={options}
                         value={value}
                         onChange={onChange}

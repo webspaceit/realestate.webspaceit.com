@@ -69,7 +69,7 @@ export default function Create() {
                                 </div>
                                 <SearchableSelect
                                     label="Department"
-                                    placeholder="Select department..."
+                                    placeholder="Select Department..."
                                     options={departments.map((d) => ({ value: String(d.id), label: d.name }))}
                                     value={form.department_id}
                                     onChange={(v) => set('department_id', v)}

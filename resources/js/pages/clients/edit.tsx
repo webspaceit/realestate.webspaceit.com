@@ -251,7 +251,7 @@ export default function Edit() {
                                                 id="profession"
                                                 value={profession}
                                                 onChange={(e) => setProfession(e.target.value)}
-                                                placeholder="Search or type profession..."
+                                                placeholder="Select Profession..."
                                                 list="profession-list"
                                             />
                                             <datalist id="profession-list">
@@ -283,7 +283,7 @@ export default function Edit() {
                                             id="nationality"
                                             value={nationality}
                                             onChange={(e) => setNationality(e.target.value)}
-                                            placeholder="Search nationality..."
+                                            placeholder="Select Nationality..."
                                             list="nationality-list"
                                         />
                                         <datalist id="nationality-list">
@@ -535,7 +535,7 @@ export default function Edit() {
                             />
                             <SearchableSelect
                                 label="Unit"
-                                placeholder={buildingId ? 'Select unit' : 'Select building first'}
+                                placeholder={buildingId ? 'Select Unit...' : 'Select Building First...'}
                                 disabled={!buildingId}
                                 options={filteredUnits.map(u => ({ value: String(u.id), label: u.unit_number }))}
                                 value={unitId}
@@ -559,7 +559,7 @@ export default function Edit() {
                                         </div>
                                         <div className="space-y-1">
                                             <Label>Relationship</Label>
-                                            <Input value={nominee.relationship} onChange={(e) => { const n = [...nominees]; n[i] = { ...n[i], relationship: e.target.value }; setNominees(n) }} placeholder="Search relationship..." list="relationship-list" />
+                                            <Input value={nominee.relationship} onChange={(e) => { const n = [...nominees]; n[i] = { ...n[i], relationship: e.target.value }; setNominees(n) }} placeholder="Select Relationship..." list="relationship-list" />
                                             <datalist id="relationship-list">
                                                 <option value="Brother" />
                                                 <option value="Daughter" />

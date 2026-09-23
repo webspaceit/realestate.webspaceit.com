@@ -103,7 +103,7 @@ export default function Edit({ booking, clients, units }: { booking: Booking; cl
                         <CardContent className="space-y-4">
                             <SearchableSelect
                                 label="Client"
-                                placeholder="Search and select a client..."
+                                placeholder="Select Client..."
                                 options={filteredClients.map(c => ({
                                     value: String(c.id),
                                     label: `${c.contact_person || c.company_name} (${c.phone_mobile || 'N/A'})`,
@@ -114,7 +114,7 @@ export default function Edit({ booking, clients, units }: { booking: Booking; cl
 
                             <SearchableSelect
                                 label="Unit"
-                                placeholder="Select a unit..."
+                                placeholder="Select Unit..."
                                 options={units.map(u => ({
                                     value: String(u.id),
                                     label: `${u.unit_number} - ${u.building?.name || 'N/A'}${u.price ? ` (৳${Number(u.price).toLocaleString('en-US')})` : ''} [${u.status}]`,
