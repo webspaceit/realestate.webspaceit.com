@@ -83,6 +83,7 @@ class LeadController extends Controller
     {
         $lead->load([
             'assignedTo:id,name',
+            'convertedClient:id,contact_person,company_name,owner_id',
             'interactions' => fn ($q) => $q->with('recordedBy:id,name')->orderBy('interaction_date', 'desc'),
             'meetings' => fn ($q) => $q->with('organizer:id,name')->orderBy('scheduled_at', 'desc'),
         ]);

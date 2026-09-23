@@ -117,7 +117,7 @@ const defaultNavItems: NavItem[] = [
             { id: 'crm-clients', title: 'Clients', href: flatOwners.index().url, icon: ContactRound },
             { id: 'crm-bookings', title: 'Flat Bookings', href: bookings.index().url, icon: CalendarCheck },
             { id: 'crm-documents', title: 'Documents', href: documents.index().url, icon: FileText },
-            { id: 'crm-reports', title: 'Reports', href: '/crm/reports', icon: BarChart3 },
+            { id: 'crm-reports', title: 'Reports', href: crm.reports().url, icon: BarChart3 },
         ],
     },
     {

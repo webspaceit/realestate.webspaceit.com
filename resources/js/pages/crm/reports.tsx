@@ -6,11 +6,11 @@ import { TrendingUp, Users, Target, CalendarCheck, PhoneCall, BarChart3 } from '
 import { dashboard } from '@/routes'
 import crm from '@/routes/crm'
 
-interface StageRow   { stage: string; count: number; value: number; badge: string }
-interface SourceRow  { source: string; count: number }
+interface StageRow { stage: string; count: number; value: number; badge: string }
+interface SourceRow { source: string; count: number }
 interface MonthlyRow { month: string; count: number; value?: string }
-interface TypeRow    { type: string; count: number }
-interface ClientRow  { id: number; name: string; total_value: number }
+interface TypeRow { type: string; count: number }
+interface ClientRow { id: number; name: string; total_value: number }
 
 interface ConversionStats {
     total: number
@@ -85,12 +85,12 @@ export default function Reports() {
 
             {/* KPI row */}
             <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-                <StatCard label="Total Leads"     value={conversionStats.total}        icon={Target}        color="from-blue-500 to-indigo-600" />
-                <StatCard label="Converted"        value={conversionStats.converted}    sub={`${conversionStats.conversion_rate}% rate`} icon={Users} color="from-emerald-500 to-teal-600" />
-                <StatCard label="Awarded"          value={conversionStats.awarded}      icon={TrendingUp}    color="from-green-500 to-lime-600" />
-                <StatCard label="Lost"             value={conversionStats.lost}         icon={BarChart3}     color="from-red-500 to-rose-600" />
+                <StatCard label="Total Leads" value={conversionStats.total} icon={Target} color="from-blue-500 to-indigo-600" />
+                <StatCard label="Converted" value={conversionStats.converted} sub={`${conversionStats.conversion_rate}% rate`} icon={Users} color="from-emerald-500 to-teal-600" />
+                <StatCard label="Awarded" value={conversionStats.awarded} icon={TrendingUp} color="from-green-500 to-lime-600" />
+                <StatCard label="Lost" value={conversionStats.lost} icon={BarChart3} color="from-red-500 to-rose-600" />
                 <StatCard label="Confirmed Bookings" value={bookingsByStatus.confirmed} icon={CalendarCheck} color="from-orange-500 to-amber-600" />
-                <StatCard label="Booking Value"   value={fmt(totalBookingValue)}        icon={TrendingUp}    color="from-purple-500 to-fuchsia-600" />
+                <StatCard label="Booking Value" value={fmt(totalBookingValue)} icon={TrendingUp} color="from-purple-500 to-fuchsia-600" />
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
@@ -286,6 +286,6 @@ Reports.layout = {
     breadcrumbs: [
         { title: 'Dashboard', href: dashboard().url },
         { title: 'CRM Dashboard', href: crm.dashboard().url },
-        { title: 'Reports', href: '/crm/reports' },
+        { title: 'Reports', href: crm.reports().url },
     ],
 }

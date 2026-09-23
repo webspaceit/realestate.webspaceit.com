@@ -155,15 +155,19 @@ class CrmController extends Controller
 
         // ── Top clients by booking value ─────────────────────────────────
         $topClients = Client::query()
-            ->withSum(['bookings as total_value' => fn ($q) => $q->whereIn('status', ['pending', 'confirmed'])], 'total_price')
-            ->having('total_value', '>', 0)
-            ->orderByDesc('total_value')
+            ->withAggregate(
+                ['bookings' => fn ($q) => $q->whereIn('status', ['pending', 'confirmed'])],
+                'total_price',
+                'sum'
+            )
+            ->having('bookings_sum_total_price', '>', 0)
+            ->orderByDesc('bookings_sum_total_price')
             ->limit(10)
             ->get(['id', 'contact_person', 'company_name'])
             ->map(fn ($c) => [
-                'id'             => $c->id,
-                'name'           => $c->company_name ?: $c->contact_person,
-                'total_value'    => (float) $c->total_value,
+                'id'          => $c->id,
+                'name'        => $c->company_name ?: $c->contact_person,
+                'total_value' => (float) $c->bookings_sum_total_price,
             ]);
 
         return Inertia::render('crm/reports', [
