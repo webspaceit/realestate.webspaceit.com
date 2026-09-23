@@ -8,10 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('payment_schedules')) {
+            return; // already created from a partial run
+        }
+
         Schema::create('payment_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
-            $table->string('label', 100)->nullable(); // e.g. "Installment 1", "Registration Fee"
+            // Plain unsigned bigint — no FK constraint for cross-engine MySQL compat
+            $table->unsignedBigInteger('booking_id');
+            $table->string('label', 100)->nullable();
             $table->date('due_date');
             $table->decimal('amount', 15, 2);
             $table->decimal('paid_amount', 15, 2)->default(0);
